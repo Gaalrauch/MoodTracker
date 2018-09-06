@@ -3,49 +3,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_grey"
     android:orientation="vertical"
     android:weightSum="7"
     tools:context="fr.hironic.moodtracker.controller.HistoryActivity">
 
-    <include android:id="@+id/llHistory0"
+    <include
+        android:id="@+id/llHistory0"
+        layout="@layout/history_mood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        layout="@layout/history_mood"/>
+        android:layout_weight="1" />
 
-    <include android:id="@+id/llHistory1"
+    <include
+        android:id="@+id/llHistory1"
+        layout="@layout/history_mood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        layout="@layout/history_mood"/>
+        android:layout_weight="1" />
 
-    <include android:id="@+id/llHistory2"
+    <include
+        android:id="@+id/llHistory2"
+        layout="@layout/history_mood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        layout="@layout/history_mood"/>
+        android:layout_weight="1" />
 
-    <include android:id="@+id/llHistory3"
+    <include
+        android:id="@+id/llHistory3"
+        layout="@layout/history_mood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        layout="@layout/history_mood"/>
+        android:layout_weight="1" />
 
-    <include android:id="@+id/llHistory4"
+    <include
+        android:id="@+id/llHistory4"
+        layout="@layout/history_mood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        layout="@layout/history_mood"/>
+        android:layout_weight="1" />
 
-    <include android:id="@+id/llHistory5"
+    <include
+        android:id="@+id/llHistory5"
+        layout="@layout/history_mood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        layout="@layout/history_mood"/>
+        android:layout_weight="1" />
 
-    <include android:id="@+id/llHistory6"
+    <include
+        android:id="@+id/llHistory6"
+        layout="@layout/history_mood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        layout="@layout/history_mood"/>
+        android:layout_weight="1" />
 </LinearLayout>

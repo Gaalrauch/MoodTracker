@@ -12,6 +12,7 @@
     <color name="banana_yellow">#f9ec4f</color>
 
     <!-- Background color for history activity -->
-    <color name="warm_grey_lighter">#AbAbAb</color>
+    <color name="light_grey">#cecece</color>
+    <color name="history_mood_black_shadow">#43000000</color>
 
 </resources>

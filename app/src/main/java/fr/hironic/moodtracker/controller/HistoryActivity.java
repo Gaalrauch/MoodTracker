@@ -1,9 +1,9 @@
 package fr.hironic.moodtracker.controller;
 
-import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 
-import java.util.Calendar;
 
 import fr.hironic.moodtracker.R;
 import fr.hironic.moodtracker.model.MoodHistory;
@@ -23,6 +22,11 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int screenWidth = metrics.widthPixels;
 
         MoodHistory mMoodHistory = new MoodHistory(this);
         JSONArray moods = mMoodHistory.getMoods();
@@ -45,10 +49,12 @@ public class HistoryActivity extends AppCompatActivity {
                 // Show this mood
                 try {
                     JSONArray moodData = new JSONArray(moods.getString(i));
-                    int colorID = moodData.getInt(1);
-                    layout.setBackgroundColor(getResources().getColor(moodColors[colorID]));
+                    int moodID = moodData.getInt(1);
+                    layout.setBackgroundColor(getResources().getColor(moodColors[moodID]));
                     layout.setVisibility(View.VISIBLE);
 
+
+                    layout.setMaxWidth(screenWidth / 5 * (moodID + 1));
                     String date = moodData.getString(0);
 
                     int days = DateManager.GetDaysBetweenTwoDates(currentDate, date);
