@@ -1,13 +1,17 @@
 package fr.hironic.moodtracker.controller;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -20,7 +24,6 @@ import fr.hironic.moodtracker.model.MoodAdapter;
 import fr.hironic.moodtracker.model.MoodHistory;
 
 public class MainActivity extends AppCompatActivity {
-
 
     private SharedPreferences mPreferences;
     public static final String PREF_KEY_LAST_DATE = "LAST_DATE";
@@ -37,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
     public static int mScreenHeight = 1;
 
     private MoodHistory mMoodHistory;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
 
-
                     mAutoScrolling = true;
                     if(scrollY > mScreenHeight / 2) {
                         scrollingTo++;
@@ -104,27 +103,59 @@ public class MainActivity extends AppCompatActivity {
 
         mMoodsListView.setSelection(mTodayMood);
 
-
+        // History Button
         Button button = findViewById(R.id.btnHistory);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //
-                // Start history activity
-                // ...
-                //
                 Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
                 startActivity(intent);
 
             }
         });
 
+        // Comment button
+        button = findViewById(R.id.btnComment);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LayoutInflater layoutInflaterAndroid = LayoutInflater.from(MainActivity.this);
+                View mView = layoutInflaterAndroid.inflate(R.layout.add_comment_dialog_box, null);
+
+                // Set text to today comment
+                final EditText etUserInput = mView.findViewById(R.id.etComment);
+                etUserInput.setText(mTodayComment);
+
+                AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(MainActivity.this);
+                alertDialogBuilderUserInput.setView(mView);
+
+                alertDialogBuilderUserInput
+                        .setCancelable(false)
+                        .setPositiveButton("VALIDER", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                // Save comment for today
+                                mTodayComment = etUserInput.getText().toString();
+                            }
+                        })
+
+                        .setNegativeButton("ANNULER",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialogBox, int id) {
+                                        dialogBox.cancel();
+                                    }
+                                });
+
+                AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
+                alertDialogAndroid.show();
+
+            }
+        });
+
     }
 
-
     private List<Mood> generateMoods() {
-
         List<Mood> moods = new ArrayList<>();
         moods.add(new Mood(getResources().getColor(R.color.faded_red), getResources().getDrawable(R.drawable.smiley_sad)));
         moods.add(new Mood(getResources().getColor(R.color.warm_grey), getResources().getDrawable(R.drawable.smiley_disappointed)));
@@ -141,13 +172,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(!currentDate.equals(mLastDate)) {
 
-            if(mLastDate != "Never") {
-
-                //
-                // Here we save previous mood with/without comment
-                //
+            if(!mLastDate.equals("Never")) { // There was something to save, then save it
                 mMoodHistory.SaveMood(mLastDate, mTodayMood, mTodayComment);
-
             }
 
             mLastDate = currentDate;
