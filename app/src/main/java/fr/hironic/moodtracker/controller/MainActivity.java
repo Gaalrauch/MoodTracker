@@ -22,6 +22,7 @@ import fr.hironic.moodtracker.R;
 import fr.hironic.moodtracker.model.Mood;
 import fr.hironic.moodtracker.model.MoodAdapter;
 import fr.hironic.moodtracker.model.MoodHistory;
+import fr.hironic.moodtracker.tools.DateManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -153,6 +154,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*
+        mMoodHistory.SaveMood("2018_9_1", 0, "Bonjour");
+        mMoodHistory.SaveMood("2018_9_2", 1, "Hello");
+        mMoodHistory.SaveMood("2018_9_4", 2, "De LU");
+        mMoodHistory.SaveMood("2018_9_5", 4, "");
+        */
+
     }
 
     private List<Mood> generateMoods() {
@@ -167,9 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void CheckForNewDay() {
 
-        Calendar calendar = Calendar.getInstance();
-        String currentDate = calendar.get(Calendar.YEAR) + "_" + calendar.get(Calendar.MONTH) + "_" + calendar.get(Calendar.DAY_OF_MONTH);
-
+        String currentDate = DateManager.GetTodayDate();
         if(!currentDate.equals(mLastDate)) {
 
             if(!mLastDate.equals("Never")) { // There was something to save, then save it

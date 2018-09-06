@@ -1,14 +1,16 @@
 package fr.hironic.moodtracker.tools;
 
 import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 
-public class DateManager {
+public abstract class DateManager {
 
-    public Calendar GenerateCalendar(String date) {
+    public static String GetTodayDate() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.YEAR) + "_" + (calendar.get(Calendar.MONTH) + 1) + "_" + calendar.get(Calendar.DAY_OF_MONTH);
+    }
 
+    private static Calendar GenerateCalendar(String date) {
         String[] array = date.split("_");
-
         Calendar calendar = Calendar.getInstance();
         calendar.set(Integer.parseInt(array[0]),
                 Integer.parseInt(array[1]),
@@ -20,10 +22,11 @@ public class DateManager {
         return calendar;
     }
 
-    public int GetDaysBetween(Calendar calendar1, Calendar calendar2) {
-
+    public static int GetDaysBetweenTwoDates(String date1, String date2) {
+        Calendar calendar1 = GenerateCalendar(date1);
+        Calendar calendar2 = GenerateCalendar(date2);
         long msDiff = calendar1.getTimeInMillis() - calendar2.getTimeInMillis();
-        return (int) TimeUnit.MILLISECONDS.toDays(msDiff);
+        return Math.round((float) msDiff / 86400000);
     }
 
 }

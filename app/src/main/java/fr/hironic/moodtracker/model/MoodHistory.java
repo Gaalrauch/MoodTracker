@@ -16,6 +16,10 @@ public class MoodHistory {
 
     private JSONArray mMoods;
 
+    public JSONArray getMoods() {
+        return mMoods;
+    }
+
     public MoodHistory (Context context) {
         mContext = context;
         mMoods = new JSONArray();
