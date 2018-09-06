@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         mCalendar = Calendar.getInstance();
 
         mMoodsListView = findViewById(R.id.lvMoods);
-
         List<Mood> moods = generateMoods();
 
         MoodAdapter adapter = new MoodAdapter(MainActivity.this, moods);
@@ -60,28 +59,25 @@ public class MainActivity extends AppCompatActivity {
         mMoodsListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             public void onScrollStateChanged(final AbsListView view, final int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    //System.out.println("ScrollY = " + mMoodsListView.getFirstVisiblePosition());
 
                     int scrollingTo = mMoodsListView.getFirstVisiblePosition();
 
+                    // in case user slowly drags smileys, stop and release finger, there will be no auto scrolling
+                    // we can check scrollY to catche this case, then we skip the next condition if
+                    // scrollY is not under 5 pixels
                     View firstChildView = mMoodsListView.getChildAt(0);
                     int scrollY = -firstChildView.getTop();
 
                     if(mAutoScrolling && scrollY < 5) {
                         mTodayMood = scrollingTo;
-                        System.out.println("Scroll End ==> " + mTodayMood);
-                        mAutoScrolling = false;
-
-
                         mPreferences.edit().putInt(PREF_KEY_TODAY_MOOD, mTodayMood).apply();
 
+                        mAutoScrolling = false;
                         return;
                     }
 
 
                     mAutoScrolling = true;
-
-
                     if(scrollY > mScreenHeight / 2) {
                         scrollingTo++;
                     }
@@ -89,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("Scrolling To " + scrollingTo);
                     mMoodsListView.smoothScrollToPositionFromTop(scrollingTo, 0, 500);
 
-                    //getFirstVisiblePosition()
                 }
             }
             @Override
@@ -105,8 +100,6 @@ public class MainActivity extends AppCompatActivity {
         CheckForHistoryUpdate();
 
         mMoodsListView.setSelection(mTodayMood);
-
-
 
     }
 
@@ -124,22 +117,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void CheckForHistoryUpdate() {
 
-
         int currentYear = mCalendar.get(Calendar.YEAR);
         int currentDayOfYear = mCalendar.get(Calendar.DAY_OF_YEAR);
 
-        System.out.println("MainActivity:: Year = " + currentYear);
-        System.out.println("MainActivity:: Day = " + currentDayOfYear);
-
         if(currentYear != mLastYear || currentDayOfYear != mLastDayOfYear) {
 
-            if (mLastYear > 0) {
-                System.out.println("MainActivity:: Déjà des infos");
+            if (mLastYear > 0) { // there is a previous mood to save.
 
-            } else {
+                //
+                // Here save previous mood with/without comment
+                //
 
-                System.out.println("MainActivity:: Pas encore d'info");
             }
+
             mLastYear = currentYear;
             mLastDayOfYear = currentDayOfYear;
             mTodayMood = DEFAULT_MOOD_VALUE;
@@ -150,9 +140,6 @@ public class MainActivity extends AppCompatActivity {
                     .putInt(PREF_KEY_TODAY_MOOD, mTodayMood)
                     .apply();
 
-        } else {
-
-            System.out.println("MainActivity:: Déjà fait aujourd'hui");
         }
     }
 }
