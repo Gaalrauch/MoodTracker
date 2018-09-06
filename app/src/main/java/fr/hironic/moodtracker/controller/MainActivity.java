@@ -72,10 +72,11 @@ public class MainActivity extends AppCompatActivity {
                     int scrollY = -firstChildView.getTop();
 
                     if(mAutoScrolling && scrollY < 5) {
+
+                        CheckForNewDay();
+
                         mTodayMood = scrollingTo;
                         mPreferences.edit().putInt(PREF_KEY_TODAY_MOOD, mTodayMood).apply();
-
-                        mMoodHistory.SaveMood("09/09/1983", mTodayMood, "Hello de LU");
                         mAutoScrolling = false;
                         return;
                     }
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
     private void CheckForNewDay() {
 
         Calendar calendar = Calendar.getInstance();
-        String currentDate = calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+        String currentDate = calendar.get(Calendar.YEAR) + "_" + calendar.get(Calendar.MONTH) + "_" + calendar.get(Calendar.DAY_OF_MONTH);
 
         if(!currentDate.equals(mLastDate)) {
 

@@ -7,7 +7,7 @@ public class DateManager {
 
     public Calendar GenerateCalendar(String date) {
 
-        String[] array = date.split("-");
+        String[] array = date.split("_");
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Integer.parseInt(array[0]),

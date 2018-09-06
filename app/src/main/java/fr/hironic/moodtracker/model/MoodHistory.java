@@ -20,6 +20,17 @@ public class MoodHistory {
         mContext = context;
         mMoods = new JSONArray();
         ReloadMoodsFromFile();
+
+        System.out.println(mMoods);
+
+        for(int i = 0; i < mMoods.length(); i++) {
+
+            try {
+                System.out.println("Entry " + i + " : " + mMoods.getString(i));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void SaveMood(String date, int mood, String comment) {
