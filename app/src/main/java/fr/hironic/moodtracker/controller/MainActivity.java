@@ -1,5 +1,6 @@
 package fr.hironic.moodtracker.controller;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -112,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
                 // Start history activity
                 // ...
                 //
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(intent);
 
             }
         });

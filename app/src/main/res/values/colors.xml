@@ -11,4 +11,7 @@
     <color name="light_sage">#b8e986</color>
     <color name="banana_yellow">#f9ec4f</color>
 
+    <!-- Background color for history activity -->
+    <color name="warm_grey_lighter">#AbAbAb</color>
+
 </resources>
