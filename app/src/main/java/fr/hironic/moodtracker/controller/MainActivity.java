@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -15,27 +16,28 @@ import java.util.List;
 import fr.hironic.moodtracker.R;
 import fr.hironic.moodtracker.model.Mood;
 import fr.hironic.moodtracker.model.MoodAdapter;
+import fr.hironic.moodtracker.model.MoodHistory;
 
 public class MainActivity extends AppCompatActivity {
 
 
     private SharedPreferences mPreferences;
-    public static final String PREF_KEY_LASTYEAR = "LAST_YEAR";
-    public static final String PREF_KEY_DAY_OF_YEAR = "LAST_DAY_OF_YEAR";
+    public static final String PREF_KEY_LAST_DATE = "LAST_DATE";
     public static final String PREF_KEY_TODAY_MOOD = "TODAY_MOOD";
-    private int mLastYear;
-    private int mLastDayOfYear;
+    public static final String PREF_KEY_TODAY_COMMENT = "TODAY_COMMENT";
+    private String mLastDate;
     private int mTodayMood;
+    private String mTodayComment;
 
     public static final int DEFAULT_MOOD_VALUE = 3;
 
-    private Calendar mCalendar;
-
     private ListView mMoodsListView;
     private Boolean mAutoScrolling = false;
-
-
     public static int mScreenHeight = 1;
+
+    private MoodHistory mMoodHistory;
+
+
 
 
     @Override
@@ -44,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mPreferences = getPreferences(MODE_PRIVATE);
-        mLastYear = mPreferences.getInt(PREF_KEY_LASTYEAR, 0);
-        mLastDayOfYear = mPreferences.getInt(PREF_KEY_DAY_OF_YEAR, 0);
+        mLastDate = mPreferences.getString(PREF_KEY_LAST_DATE, "Never");
         mTodayMood = mPreferences.getInt(PREF_KEY_TODAY_MOOD, DEFAULT_MOOD_VALUE);
+        mTodayComment = mPreferences.getString(PREF_KEY_TODAY_COMMENT, "");
 
-        mCalendar = Calendar.getInstance();
+        mMoodHistory = new MoodHistory(this);
 
         mMoodsListView = findViewById(R.id.lvMoods);
         List<Mood> moods = generateMoods();
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                         mTodayMood = scrollingTo;
                         mPreferences.edit().putInt(PREF_KEY_TODAY_MOOD, mTodayMood).apply();
 
+                        mMoodHistory.SaveMood("09/09/1983", mTodayMood, "Hello de LU");
                         mAutoScrolling = false;
                         return;
                     }
@@ -82,14 +85,12 @@ public class MainActivity extends AppCompatActivity {
                         scrollingTo++;
                     }
 
-                    System.out.println("Scrolling To " + scrollingTo);
                     mMoodsListView.smoothScrollToPositionFromTop(scrollingTo, 0, 500);
 
                 }
             }
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
             }
         });
 
@@ -97,9 +98,23 @@ public class MainActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         mScreenHeight = metrics.heightPixels;
 
-        CheckForHistoryUpdate();
+        CheckForNewDay();
 
         mMoodsListView.setSelection(mTodayMood);
+
+
+        Button button = findViewById(R.id.btnHistory);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //
+                // Start history activity
+                // ...
+                //
+
+            }
+        });
 
     }
 
@@ -115,31 +130,31 @@ public class MainActivity extends AppCompatActivity {
         return moods;
     }
 
-    private void CheckForHistoryUpdate() {
+    private void CheckForNewDay() {
 
-        int currentYear = mCalendar.get(Calendar.YEAR);
-        int currentDayOfYear = mCalendar.get(Calendar.DAY_OF_YEAR);
+        Calendar calendar = Calendar.getInstance();
+        String currentDate = calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
 
-        if(currentYear != mLastYear || currentDayOfYear != mLastDayOfYear) {
+        if(!currentDate.equals(mLastDate)) {
 
-            if (mLastYear > 0) { // there is a previous mood to save.
+            if(mLastDate != "Never") {
 
                 //
-                // Here save previous mood with/without comment
+                // Here we save previous mood with/without comment
                 //
+                mMoodHistory.SaveMood(mLastDate, mTodayMood, mTodayComment);
 
             }
 
-            mLastYear = currentYear;
-            mLastDayOfYear = currentDayOfYear;
+            mLastDate = currentDate;
             mTodayMood = DEFAULT_MOOD_VALUE;
+            mTodayComment = "";
 
             mPreferences.edit()
-                    .putInt(PREF_KEY_LASTYEAR, mLastYear)
-                    .putInt(PREF_KEY_DAY_OF_YEAR, mLastDayOfYear)
+                    .putString(PREF_KEY_LAST_DATE, mLastDate)
                     .putInt(PREF_KEY_TODAY_MOOD, mTodayMood)
+                    .putString(PREF_KEY_TODAY_COMMENT, mTodayComment)
                     .apply();
-
         }
     }
 }
