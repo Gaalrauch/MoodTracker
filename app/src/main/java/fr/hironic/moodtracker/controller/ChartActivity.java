@@ -20,8 +20,6 @@ import fr.hironic.moodtracker.model.MoodHistory;
 
 public class ChartActivity extends AppCompatActivity {
 
-    // ToDo : Create icon for chart button on main activity layout
-    // ToDo : Add legend in activity layout
 
     private int[] mMoodsCount;
 

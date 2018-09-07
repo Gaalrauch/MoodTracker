@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -142,7 +143,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 LayoutInflater layoutInflaterAndroid = LayoutInflater.from(MainActivity.this);
-                View mView = layoutInflaterAndroid.inflate(R.layout.add_comment_dialog_box, null);
+                final ViewGroup nullParent = null;
+                View mView = layoutInflaterAndroid.inflate(R.layout.add_comment_dialog_box, nullParent);
 
                 // Set text to today comment
                 final EditText etUserInput = mView.findViewById(R.id.etComment);

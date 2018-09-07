@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 
 public class Mood {
 
-
     private int color;
     private Drawable icon;
 

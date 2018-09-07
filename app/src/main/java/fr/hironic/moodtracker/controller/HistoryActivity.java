@@ -23,7 +23,6 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int screenWidth = metrics.widthPixels;
@@ -45,14 +44,12 @@ public class HistoryActivity extends AppCompatActivity {
             ConstraintLayout layout = findViewById(layoutId);
 
             if(i < moods.length()) {
-
                 // Show this mood
                 try {
                     JSONArray moodData = new JSONArray(moods.getString(i));
                     int moodID = moodData.getInt(1);
                     layout.setBackgroundColor(getResources().getColor(moodColors[moodID]));
                     layout.setVisibility(View.VISIBLE);
-
 
                     layout.setMaxWidth(Math.round(screenWidth * 0.4f + screenWidth * 0.15f * (moodID + 1)));
                     String date = moodData.getString(0);
@@ -88,17 +85,10 @@ public class HistoryActivity extends AppCompatActivity {
                         });
                     }
 
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             }
-
-
-
         }
-
     }
 }

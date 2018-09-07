@@ -1,6 +1,8 @@
 package fr.hironic.moodtracker.model;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +22,9 @@ public class MoodAdapter extends ArrayAdapter<Mood> {
         super(context, 0, moods);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @Nullable ViewGroup parent) {
 
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.mood, parent, false);
@@ -38,8 +41,10 @@ public class MoodAdapter extends ArrayAdapter<Mood> {
         Mood mood = getItem(position);
 
         // Fill view
-        viewHolder.layout.setBackgroundColor(mood.getColor());
-        viewHolder.imageView.setImageDrawable(mood.getIcon());
+        if(mood != null) {
+            viewHolder.layout.setBackgroundColor(mood.getColor());
+            viewHolder.imageView.setImageDrawable(mood.getIcon());
+        }
 
         convertView.setMinimumHeight(MainActivity.mScreenHeight);
 
