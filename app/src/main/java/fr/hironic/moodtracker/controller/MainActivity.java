@@ -13,6 +13,7 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                CheckForNewDay();
                 Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
                 startActivity(intent);
 
@@ -137,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogBox, int id) {
                                 // Save comment for today
                                 mTodayComment = etUserInput.getText().toString();
+                                Toast.makeText(getApplicationContext(), "Votre commentaire a bien été enregistré.", Toast.LENGTH_SHORT).show();
                             }
                         })
 
