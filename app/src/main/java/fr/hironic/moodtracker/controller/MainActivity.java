@@ -53,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
         mTodayComment = mPreferences.getString(PREF_KEY_TODAY_COMMENT, "");
 
         mMoodHistory = new MoodHistory(this);
+        // If there is something saved, show chart and history buttons
+        if(mMoodHistory.getMoods().length() > 0) {
+            findViewById(R.id.btnChart).setVisibility(View.VISIBLE);
+            findViewById(R.id.btnHistory).setVisibility(View.VISIBLE);
+        }
 
         mMoodsListView = findViewById(R.id.lvMoods);
         List<Mood> moods = generateMoods();
@@ -188,6 +193,9 @@ public class MainActivity extends AppCompatActivity {
 
             if(!mLastDate.equals("Never")) { // There was something to save, then save it
                 mMoodHistory.SaveMood(mLastDate, mTodayMood, mTodayComment);
+                // In case there was no history before, show chart and history buttons
+                findViewById(R.id.btnChart).setVisibility(View.VISIBLE);
+                findViewById(R.id.btnHistory).setVisibility(View.VISIBLE);
             }
 
             mLastDate = currentDate;
