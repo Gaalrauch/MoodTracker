@@ -76,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
 
                         CheckForNewDay();
 
+                        // Remove current comment if we change mood
+                        if(scrollingTo != mTodayMood) {
+                            mTodayComment = "";
+                        }
                         mTodayMood = scrollingTo;
                         mPreferences.edit().putInt(PREF_KEY_TODAY_MOOD, mTodayMood).apply();
                         mAutoScrolling = false;
