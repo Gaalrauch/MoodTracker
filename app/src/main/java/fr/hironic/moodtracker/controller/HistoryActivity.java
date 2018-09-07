@@ -54,7 +54,7 @@ public class HistoryActivity extends AppCompatActivity {
                     layout.setVisibility(View.VISIBLE);
 
 
-                    layout.setMaxWidth(screenWidth / 5 * (moodID + 1));
+                    layout.setMaxWidth(Math.round(screenWidth * 0.4f + screenWidth * 0.15f * (moodID + 1)));
                     String date = moodData.getString(0);
 
                     int days = DateManager.GetDaysBetweenTwoDates(currentDate, date);
