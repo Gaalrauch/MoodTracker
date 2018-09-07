@@ -159,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogBox, int id) {
                                 // Save comment for today
                                 mTodayComment = etUserInput.getText().toString();
+                                // Update SharedPreferences
+                                mPreferences.edit().putString(PREF_KEY_TODAY_COMMENT, mTodayComment).apply();
                                 Toast.makeText(getApplicationContext(), "Votre commentaire a bien été enregistré.", Toast.LENGTH_SHORT).show();
                             }
                         })
