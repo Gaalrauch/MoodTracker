@@ -86,9 +86,9 @@ public class ChartActivity extends AppCompatActivity {
         data.setValueTextSize(17f);
         data.setValueTextColor(Color.BLACK);
         // Define hole
-        pieChart.setDrawHoleEnabled(true);
-        pieChart.setTransparentCircleRadius(22f);
-        pieChart.setHoleRadius(20f);
+        pieChart.setDrawHoleEnabled(false);
+        //pieChart.setTransparentCircleRadius(22f);
+        //pieChart.setHoleRadius(20f);
         // Set chart data
         pieChart.setData(data);
 
