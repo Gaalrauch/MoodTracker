@@ -113,11 +113,20 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 CheckForNewDay();
                 Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
                 startActivity(intent);
+            }
+        });
 
+        // Chart Button
+        button = findViewById(R.id.btnChart);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckForNewDay();
+                Intent intent = new Intent(MainActivity.this, ChartActivity.class);
+                startActivity(intent);
             }
         });
 
