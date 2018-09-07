@@ -70,7 +70,7 @@ public class HistoryActivity extends AppCompatActivity {
                             text = "Il y a une semaine";
                             break;
                         default:
-                            text = "Il y a " + days + "jours";
+                            text = "Il y a " + days + " jours";
                     }
 
                     TextView textView = layout.findViewById(R.id.tvTime);

@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import fr.hironic.moodtracker.R;
@@ -153,13 +152,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        /*
-        mMoodHistory.SaveMood("2018_9_1", 0, "Bonjour");
-        mMoodHistory.SaveMood("2018_9_2", 1, "Hello");
-        mMoodHistory.SaveMood("2018_9_4", 2, "De LU");
-        mMoodHistory.SaveMood("2018_9_5", 4, "");
-        */
 
     }
 

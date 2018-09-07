@@ -6,7 +6,7 @@ public abstract class DateManager {
 
     public static String GetTodayDate() {
         Calendar calendar = Calendar.getInstance();
-        return calendar.get(Calendar.YEAR) + "_" + (calendar.get(Calendar.MONTH) + 1) + "_" + calendar.get(Calendar.DAY_OF_MONTH);
+        return calendar.get(Calendar.YEAR) + "_" + calendar.get(Calendar.MONTH) + "_" + calendar.get(Calendar.DAY_OF_MONTH);
     }
 
     private static Calendar GenerateCalendar(String date) {
