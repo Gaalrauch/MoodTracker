@@ -180,12 +180,17 @@ public class MainActivity extends AppCompatActivity implements
 
         int action = motionEvent.getAction();
 
+
         if(view.getId() == R.id.imgSmiley) {
             mGestureDetector.onTouchEvent(motionEvent);
             return true;
         }
 
-        if(action != MotionEvent.ACTION_UP) return false;
+        if(action != MotionEvent.ACTION_UP) {
+            return false;
+        }
+
+        view.performClick();
 
         if(view.getId() == R.id.btnChart) {
 
