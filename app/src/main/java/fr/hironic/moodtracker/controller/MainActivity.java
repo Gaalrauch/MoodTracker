@@ -6,14 +6,11 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,7 +18,6 @@ import java.util.List;
 
 import fr.hironic.moodtracker.R;
 import fr.hironic.moodtracker.model.Mood;
-import fr.hironic.moodtracker.model.MoodAdapter;
 import fr.hironic.moodtracker.model.MoodHistory;
 import fr.hironic.moodtracker.tools.DateManager;
 
@@ -36,10 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private String mTodayComment;
 
     public static final int DEFAULT_MOOD_VALUE = 3;
-
-    private ListView mMoodsListView;
-    private Boolean mAutoScrolling = false;
-    public static int mScreenHeight = 1;
 
     private MoodHistory mMoodHistory;
 
@@ -60,59 +52,10 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.btnHistory).setVisibility(View.VISIBLE);
         }
 
-        mMoodsListView = findViewById(R.id.lvMoods);
-        List<Mood> moods = generateMoods();
-
-        MoodAdapter adapter = new MoodAdapter(MainActivity.this, moods);
-        mMoodsListView.setAdapter(adapter);
-
-        mMoodsListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            public void onScrollStateChanged(final AbsListView view, final int scrollState) {
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-
-                    int scrollingTo = mMoodsListView.getFirstVisiblePosition();
-
-                    // in case user slowly drags smileys, stop and release finger, there will be no auto scrolling
-                    // we can check scrollY to catche this case, then we skip the next condition if
-                    // scrollY is not under 5 pixels
-                    View firstChildView = mMoodsListView.getChildAt(0);
-                    int scrollY = -firstChildView.getTop();
-
-                    if(mAutoScrolling && scrollY < 5) {
-
-                        CheckForNewDay();
-
-                        // Remove current comment if we change mood
-                        if(scrollingTo != mTodayMood) {
-                            mTodayComment = "";
-                        }
-                        mTodayMood = scrollingTo;
-                        mPreferences.edit().putInt(PREF_KEY_TODAY_MOOD, mTodayMood).apply();
-                        mAutoScrolling = false;
-                        return;
-                    }
-
-                    mAutoScrolling = true;
-                    if(scrollY > mScreenHeight / 2) {
-                        scrollingTo++;
-                    }
-
-                    mMoodsListView.smoothScrollToPositionFromTop(scrollingTo, 0, 500);
-
-                }
-            }
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-            }
-        });
-
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        mScreenHeight = metrics.heightPixels;
 
         CheckForNewDay();
 
-        mMoodsListView.setSelection(mTodayMood);
+        selectMood(mTodayMood);
 
         // History Button
         Button button = findViewById(R.id.btnHistory);
@@ -212,5 +155,16 @@ public class MainActivity extends AppCompatActivity {
                     .putString(PREF_KEY_TODAY_COMMENT, mTodayComment)
                     .apply();
         }
+    }
+
+    private void selectMood(int mood) {
+
+        CheckForNewDay();
+        // Remove current comment if we change mood
+        if(mood != mTodayMood) {
+            mTodayComment = "";
+        }
+        mTodayMood = mood;
+        mPreferences.edit().putInt(PREF_KEY_TODAY_MOOD, mTodayMood).apply();
     }
 }
