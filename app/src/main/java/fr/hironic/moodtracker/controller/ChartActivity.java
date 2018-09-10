@@ -19,11 +19,12 @@ import java.util.ArrayList;
 import fr.hironic.moodtracker.R;
 import fr.hironic.moodtracker.model.MoodHistory;
 
+import static fr.hironic.moodtracker.Constants.MOOD_COLORS;
+import static fr.hironic.moodtracker.Constants.PREF_KEY_SHARED_KEY;
+import static fr.hironic.moodtracker.Constants.PREF_MOOD_HISTORY;
+
 public class ChartActivity extends AppCompatActivity {
 
-    private SharedPreferences mSharedPreferences;
-    public static final String PREF_KEY_SHARED_KEY = "MOOD_TRACKER";
-    public static final String PREF_MOOD_HISTORY = "MOOD_HISTORY";
     private int[] mMoodsCount;
 
     @Override
@@ -33,13 +34,17 @@ public class ChartActivity extends AppCompatActivity {
 
         mMoodsCount = new int[] { 0, 0, 0, 0, 0 };
 
-        mSharedPreferences = getSharedPreferences(PREF_KEY_SHARED_KEY, MODE_PRIVATE);
-        String history = mSharedPreferences.getString(PREF_MOOD_HISTORY, "");
+        SharedPreferences preferences = getSharedPreferences(PREF_KEY_SHARED_KEY, MODE_PRIVATE);
+        String history = preferences.getString(PREF_MOOD_HISTORY, "");
         countMoods(history);
 
         generateChart();
     }
 
+    /**
+     * Count how many time each moods has been used
+     * @param history
+     */
     private void countMoods(String history) {
         MoodHistory moodHistory = new MoodHistory(history);
         JSONArray moods = moodHistory.getMoods();
@@ -54,23 +59,26 @@ public class ChartActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Use MPAndroid API to display a pie chart
+     */
     private void generateChart() {
 
         PieChart pieChart = findViewById(R.id.piechart);
 
-        ArrayList<Entry> yVals = new ArrayList<>();
-        ArrayList<String> xVals = new ArrayList<>();
+        ArrayList<Entry> yValues = new ArrayList<>();
+        ArrayList<String> xValues = new ArrayList<>();
 
         String[] titles = new String[]{ "Triste", "Mécontent", "Neutre", "Heureux", "Aux anges" };
         for(int i= 0; i < 5; i++) {
             if(mMoodsCount[i] > 0) {
-                yVals.add(new Entry(mMoodsCount[i], i));
-                xVals.add(titles[i]);
+                yValues.add(new Entry(mMoodsCount[i], i));
+                xValues.add(titles[i]);
             }
         }
 
-        PieDataSet dataSet = new PieDataSet(yVals, "Humeurs");
-        PieData data = new PieData(xVals, dataSet);
+        PieDataSet dataSet = new PieDataSet(yValues, "Humeurs");
+        PieData data = new PieData(xValues, dataSet);
 
         // In percentage Term
         data.setValueFormatter(new PercentFormatter());
@@ -82,11 +90,7 @@ public class ChartActivity extends AppCompatActivity {
         pieChart.setDrawSliceText(false); // Hide parts name
         pieChart.setDescription(""); // Hide description
         // Define parts colors
-        dataSet.setColors(new int[]{ R.color.faded_red,
-                R.color.warm_grey,
-                R.color.cornflower_blue_65,
-                R.color.light_sage,
-                R.color.banana_yellow }, getApplicationContext());
+        dataSet.setColors(MOOD_COLORS, getApplicationContext());
         // Define parts text size and text color
         data.setValueTextSize(17f);
         data.setValueTextColor(Color.BLACK);

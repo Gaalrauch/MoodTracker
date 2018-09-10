@@ -12,34 +12,36 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 
-
 import fr.hironic.moodtracker.R;
 import fr.hironic.moodtracker.model.MoodHistory;
 import fr.hironic.moodtracker.tools.DateManager;
 
+import static fr.hironic.moodtracker.Constants.MOOD_COLORS;
+import static fr.hironic.moodtracker.Constants.PREF_KEY_SHARED_KEY;
+import static fr.hironic.moodtracker.Constants.PREF_MOOD_HISTORY;
+
 public class HistoryActivity extends AppCompatActivity {
 
-    private SharedPreferences mSharedPreferences;
-    public static final String PREF_KEY_SHARED_KEY = "MOOD_TRACKER";
-    public static final String PREF_MOOD_HISTORY = "MOOD_HISTORY";
+    JSONArray mMoods;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        mSharedPreferences = getSharedPreferences(PREF_KEY_SHARED_KEY, MODE_PRIVATE);
-        String history = mSharedPreferences.getString(PREF_MOOD_HISTORY, "");
+        SharedPreferences preferences = getSharedPreferences(PREF_KEY_SHARED_KEY, MODE_PRIVATE);
+        String history = preferences.getString(PREF_MOOD_HISTORY, "");
 
-        System.out.println("HistoryActivity:: onCreate() history = " + history);
         MoodHistory mMoodHistory = new MoodHistory(history);
-        JSONArray moods = mMoodHistory.getMoods();
+        mMoods = mMoodHistory.getMoods();
 
-        int[] moodColors = { R.color.faded_red,
-                R.color.warm_grey,
-                R.color.cornflower_blue_65,
-                R.color.light_sage,
-                R.color.banana_yellow };
+        updateViews();
+    }
+
+    /**
+     * Update moods view to display background color, days and eventually add a comment button
+     */
+    private void updateViews() {
 
         int currentDay = DateManager.getTodayNumber();
 
@@ -52,18 +54,18 @@ public class HistoryActivity extends AppCompatActivity {
             int layoutId = getResources().getIdentifier("llHistory" + i, "id", getPackageName());
             ConstraintLayout layout = findViewById(layoutId);
 
-            if(i < moods.length()) {
+            if(i < mMoods.length()) {
                 // Show this mood
                 try {
-                    JSONArray moodData = new JSONArray(moods.getString(i));
+                    JSONArray moodData = new JSONArray(mMoods.getString(i));
                     int moodID = moodData.getInt(1);
-                    layout.setBackgroundColor(getResources().getColor(moodColors[moodID]));
+                    layout.setBackgroundColor(getResources().getColor(MOOD_COLORS[moodID]));
                     layout.setVisibility(View.VISIBLE);
 
                     layout.setMaxWidth(Math.round(screenWidth * 0.4f + screenWidth * 0.15f * moodID));
                     int dayNumber = moodData.getInt(0);
 
-                    int days = DateManager.GetDaysBetweenTwoDates(currentDay, dayNumber);
+                    int days = currentDay - dayNumber;
                     String text;
                     switch (days) {
                         case 1:

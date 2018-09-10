@@ -5,6 +5,14 @@ import java.util.TimeZone;
 
 public abstract class DateManager {
 
+    /**
+     * Return the number of days since 1st January 1970
+     * Create a calendar with default time zone to get the date in user's TimeZone
+     * Create another calendar using GMT TimeZone
+     * Set this new calendar to the date of the first calendar
+     * Return the number of days.
+     * @return
+     */
     public static int getTodayNumber() {
         Calendar calendar = Calendar.getInstance(); // Get date from our TimeZone
         calendar.set(calendar.get(Calendar.YEAR),
@@ -22,11 +30,6 @@ public abstract class DateManager {
                 0,
                 0);
 
-        return (int) (calendar.getTimeInMillis() / 86400000);
+        return (int) (gmtCalendar.getTimeInMillis() / 86400000);
     }
-
-    public static int GetDaysBetweenTwoDates(int dayNumber1, int dayNumber2) {
-        return dayNumber1 - dayNumber2;
-    }
-
 }

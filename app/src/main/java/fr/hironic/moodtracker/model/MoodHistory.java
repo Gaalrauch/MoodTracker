@@ -6,6 +6,10 @@ public class MoodHistory {
 
     private JSONArray mMoods;
 
+    /**
+     * Generate a JSONArray from history
+     * @param history
+     */
     public MoodHistory (String history) {
         mMoods = new JSONArray();
         if(!history.equals("")) {
@@ -17,10 +21,21 @@ public class MoodHistory {
         }
     }
 
+    /**
+     * Return a JSONArray containing 0 to 7 moods from history, with their type and comment.
+     * @return
+     */
     public JSONArray getMoods() {
         return mMoods;
     }
 
+    /**
+     * Add a new mood to mMoods and return the new history in a String
+     * @param dayNumber
+     * @param mood
+     * @param comment
+     * @return
+     */
     public String saveMood(int dayNumber, int mood, String comment) {
         try {
             JSONArray moodData = new JSONArray();

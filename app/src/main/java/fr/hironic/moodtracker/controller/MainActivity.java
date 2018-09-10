@@ -21,23 +21,23 @@ import fr.hironic.moodtracker.R;
 import fr.hironic.moodtracker.model.MoodHistory;
 import fr.hironic.moodtracker.tools.DateManager;
 
+import static fr.hironic.moodtracker.Constants.DEFAULT_MOOD_VALUE;
+import static fr.hironic.moodtracker.Constants.PREF_KEY_SHARED_KEY;
+import static fr.hironic.moodtracker.Constants.PREF_KEY_TODAY_NUMBER;
+import static fr.hironic.moodtracker.Constants.PREF_KEY_TODAY_COMMENT;
+import static fr.hironic.moodtracker.Constants.PREF_KEY_TODAY_MOOD;
+import static fr.hironic.moodtracker.Constants.PREF_MOOD_HISTORY;
+
 public class MainActivity extends AppCompatActivity implements
         View.OnTouchListener,
         GestureDetector.OnGestureListener {
 
     private SharedPreferences mSharedPreferences;
-    public static final String PREF_KEY_SHARED_KEY = "MOOD_TRACKER";
-    public static final String PREF_KEY_LAST_DATE = "LAST_DATE";
-    public static final String PREF_KEY_TODAY_MOOD = "TODAY_MOOD";
-    public static final String PREF_KEY_TODAY_COMMENT = "TODAY_COMMENT";
-    public static final String PREF_MOOD_HISTORY = "MOOD_HISTORY";
 
     private int mTodayNumber;
     private int mTodayMood;
     private String mTodayComment;
     private String mHistory;
-
-    public static final int DEFAULT_MOOD_VALUE = 3;
 
     private MoodHistory mMoodHistory;
 
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         mSharedPreferences = getSharedPreferences(PREF_KEY_SHARED_KEY, MODE_PRIVATE);
-        mTodayNumber = mSharedPreferences.getInt(PREF_KEY_LAST_DATE, 0);
+        mTodayNumber = mSharedPreferences.getInt(PREF_KEY_TODAY_NUMBER, 0);
         mTodayMood = mSharedPreferences.getInt(PREF_KEY_TODAY_MOOD, DEFAULT_MOOD_VALUE);
         mTodayComment = mSharedPreferences.getString(PREF_KEY_TODAY_COMMENT, "");
         mHistory = mSharedPreferences.getString(PREF_MOOD_HISTORY, "");
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements
             mTodayComment = "";
 
             mSharedPreferences.edit()
-                    .putInt(PREF_KEY_LAST_DATE, mTodayNumber)
+                    .putInt(PREF_KEY_TODAY_NUMBER, mTodayNumber)
                     .putInt(PREF_KEY_TODAY_MOOD, mTodayMood)
                     .putString(PREF_KEY_TODAY_COMMENT, mTodayComment)
                     .putString(PREF_MOOD_HISTORY, mHistory)
