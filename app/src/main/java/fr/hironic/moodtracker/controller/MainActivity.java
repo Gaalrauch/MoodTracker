@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements
 
         mMainLayout = findViewById(R.id.mainLayout);
         mSmiley = findViewById(R.id.imgSmiley);
-        mSmiley.setOnTouchListener(this);
 
         mGestureDetector = new GestureDetectorCompat(this, this);
 
@@ -79,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.btnComment).setOnTouchListener(this);
         findViewById(R.id.btnHistory).setOnTouchListener(this);
         findViewById(R.id.btnChart).setOnTouchListener(this);
+        findViewById(R.id.fling).setOnTouchListener(this);
 
     }
 
@@ -205,6 +205,9 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float velX, float velY) {
 
+        if(Math.abs(velX) > Math.abs(velY)) {
+            return false;
+        }
         if(velY < 0) {
             if(mTodayMood > 3) return false;
             selectMood(mTodayMood + 1);
@@ -221,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements
         int action = motionEvent.getAction();
 
 
-        if(view.getId() == R.id.imgSmiley) {
+        if(view.getId() == R.id.fling) {
             mGestureDetector.onTouchEvent(motionEvent);
             return true;
         }
