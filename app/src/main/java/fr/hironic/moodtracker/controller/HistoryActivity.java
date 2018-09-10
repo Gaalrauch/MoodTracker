@@ -1,5 +1,6 @@
 package fr.hironic.moodtracker.controller;
 
+import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,16 +19,18 @@ import fr.hironic.moodtracker.tools.DateManager;
 
 public class HistoryActivity extends AppCompatActivity {
 
+    private SharedPreferences mPreferences;
+    public static final String PREF_MOOD_HISTORY = "MOOD_HISTORY";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int screenWidth = metrics.widthPixels;
+        mPreferences = getPreferences(MODE_PRIVATE);
+        String history = mPreferences.getString(PREF_MOOD_HISTORY, "");
 
-        MoodHistory mMoodHistory = new MoodHistory(this);
+        MoodHistory mMoodHistory = new MoodHistory(history);
         JSONArray moods = mMoodHistory.getMoods();
 
         int[] moodColors = { R.color.faded_red,
@@ -37,6 +40,10 @@ public class HistoryActivity extends AppCompatActivity {
                 R.color.banana_yellow };
 
         int currentDay = DateManager.getTodayNumber();
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int screenWidth = metrics.widthPixels;
 
         for(int i = 0; i < 7; i++) {
 

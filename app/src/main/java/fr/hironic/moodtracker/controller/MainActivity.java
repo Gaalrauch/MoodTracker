@@ -29,9 +29,12 @@ public class MainActivity extends AppCompatActivity implements
     public static final String PREF_KEY_LAST_DATE = "LAST_DATE";
     public static final String PREF_KEY_TODAY_MOOD = "TODAY_MOOD";
     public static final String PREF_KEY_TODAY_COMMENT = "TODAY_COMMENT";
+    public static final String PREF_MOOD_HISTORY = "MOOD_HISTORY";
+
     private int mTodayNumber;
     private int mTodayMood;
     private String mTodayComment;
+    private String mHistory;
 
     public static final int DEFAULT_MOOD_VALUE = 3;
 
@@ -50,10 +53,10 @@ public class MainActivity extends AppCompatActivity implements
         mTodayNumber = mPreferences.getInt(PREF_KEY_LAST_DATE, 0);
         mTodayMood = mPreferences.getInt(PREF_KEY_TODAY_MOOD, DEFAULT_MOOD_VALUE);
         mTodayComment = mPreferences.getString(PREF_KEY_TODAY_COMMENT, "");
-
-        mMoodHistory = new MoodHistory(this);
+        mHistory = mPreferences.getString(PREF_MOOD_HISTORY, "");
+        mMoodHistory = new MoodHistory(mHistory);
         // If there is something saved, show chart and history buttons
-        if(mMoodHistory.getMoods().length() > 0) {
+        if(!mHistory.equals("")) {
             findViewById(R.id.btnChart).setVisibility(View.VISIBLE);
             findViewById(R.id.btnHistory).setVisibility(View.VISIBLE);
         }
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements
 
         mGestureDetector = new GestureDetectorCompat(this, this);
 
-        CheckForNewDay();
+        checkForNewDay();
 
         selectMood(mTodayMood);
 
@@ -73,15 +76,16 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.btnComment).setOnTouchListener(this);
         findViewById(R.id.btnHistory).setOnTouchListener(this);
         findViewById(R.id.btnChart).setOnTouchListener(this);
+
     }
 
-    private void CheckForNewDay() {
+    private void checkForNewDay() {
 
         int currentDayNumber = DateManager.getTodayNumber();
         if(currentDayNumber != mTodayNumber) {
 
             if(mTodayNumber > 0) { // There was something to save, then save it
-                mMoodHistory.SaveMood(mTodayNumber, mTodayMood, mTodayComment);
+                mHistory = mMoodHistory.saveMood(mTodayNumber, mTodayMood, mTodayComment);
                 // In case there was no history before, show chart and history buttons
                 findViewById(R.id.btnChart).setVisibility(View.VISIBLE);
                 findViewById(R.id.btnHistory).setVisibility(View.VISIBLE);
@@ -95,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements
                     .putInt(PREF_KEY_LAST_DATE, mTodayNumber)
                     .putInt(PREF_KEY_TODAY_MOOD, mTodayMood)
                     .putString(PREF_KEY_TODAY_COMMENT, mTodayComment)
+                    .putString(PREF_MOOD_HISTORY, mHistory)
                     .apply();
         }
     }
@@ -124,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void selectMood(int mood) {
-        CheckForNewDay();
+        checkForNewDay();
         // Remove current comment if we change mood
         if(mood != mTodayMood) {
             mTodayComment = "";
@@ -132,6 +137,41 @@ public class MainActivity extends AppCompatActivity implements
         mTodayMood = mood;
         mPreferences.edit().putInt(PREF_KEY_TODAY_MOOD, mTodayMood).apply();
         displayMood(mood);
+    }
+
+    private void openCommentForm() {
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(MainActivity.this);
+        final ViewGroup nullParent = null;
+        View mView = layoutInflaterAndroid.inflate(R.layout.add_comment_dialog_box, nullParent);
+
+        // Set text to today comment
+        final EditText etUserInput = mView.findViewById(R.id.etComment);
+        etUserInput.setText(mTodayComment);
+
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilderUserInput.setView(mView);
+
+        alertDialogBuilderUserInput
+                .setCancelable(false)
+                .setPositiveButton("VALIDER", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogBox, int id) {
+                        // Save comment for today
+                        mTodayComment = etUserInput.getText().toString();
+                        // Update SharedPreferences
+                        mPreferences.edit().putString(PREF_KEY_TODAY_COMMENT, mTodayComment).apply();
+                        Toast.makeText(getApplicationContext(), "Votre commentaire a bien été enregistré.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+
+                .setNegativeButton("ANNULER",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                dialogBox.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
+        alertDialogAndroid.show();
     }
 
     @Override
@@ -191,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if(view.getId() == R.id.btnChart) {
 
-            CheckForNewDay();
+            checkForNewDay();
             Intent intent = new Intent(MainActivity.this, ChartActivity.class);
             startActivity(intent);
             return true;
@@ -199,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if(view.getId() == R.id.btnHistory) {
 
-            CheckForNewDay();
+            checkForNewDay();
             Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
             startActivity(intent);
             return true;
@@ -207,38 +247,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if(view.getId() == R.id.btnComment) {
 
-            LayoutInflater layoutInflaterAndroid = LayoutInflater.from(MainActivity.this);
-            final ViewGroup nullParent = null;
-            View mView = layoutInflaterAndroid.inflate(R.layout.add_comment_dialog_box, nullParent);
-
-            // Set text to today comment
-            final EditText etUserInput = mView.findViewById(R.id.etComment);
-            etUserInput.setText(mTodayComment);
-
-            AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(MainActivity.this);
-            alertDialogBuilderUserInput.setView(mView);
-
-            alertDialogBuilderUserInput
-                    .setCancelable(false)
-                    .setPositiveButton("VALIDER", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogBox, int id) {
-                            // Save comment for today
-                            mTodayComment = etUserInput.getText().toString();
-                            // Update SharedPreferences
-                            mPreferences.edit().putString(PREF_KEY_TODAY_COMMENT, mTodayComment).apply();
-                            Toast.makeText(getApplicationContext(), "Votre commentaire a bien été enregistré.", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-
-                    .setNegativeButton("ANNULER",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialogBox, int id) {
-                                    dialogBox.cancel();
-                                }
-                            });
-
-            AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
-            alertDialogAndroid.show();
+            openCommentForm();
             return true;
         }
 
