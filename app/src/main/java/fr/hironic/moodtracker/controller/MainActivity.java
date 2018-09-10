@@ -25,7 +25,8 @@ public class MainActivity extends AppCompatActivity implements
         View.OnTouchListener,
         GestureDetector.OnGestureListener {
 
-    private SharedPreferences mPreferences;
+    private SharedPreferences mSharedPreferences;
+    public static final String PREF_KEY_SHARED_KEY = "MOOD_TRACKER";
     public static final String PREF_KEY_LAST_DATE = "LAST_DATE";
     public static final String PREF_KEY_TODAY_MOOD = "TODAY_MOOD";
     public static final String PREF_KEY_TODAY_COMMENT = "TODAY_COMMENT";
@@ -49,17 +50,19 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mPreferences = getPreferences(MODE_PRIVATE);
-        mTodayNumber = mPreferences.getInt(PREF_KEY_LAST_DATE, 0);
-        mTodayMood = mPreferences.getInt(PREF_KEY_TODAY_MOOD, DEFAULT_MOOD_VALUE);
-        mTodayComment = mPreferences.getString(PREF_KEY_TODAY_COMMENT, "");
-        mHistory = mPreferences.getString(PREF_MOOD_HISTORY, "");
+        mSharedPreferences = getSharedPreferences(PREF_KEY_SHARED_KEY, MODE_PRIVATE);
+        mTodayNumber = mSharedPreferences.getInt(PREF_KEY_LAST_DATE, 0);
+        mTodayMood = mSharedPreferences.getInt(PREF_KEY_TODAY_MOOD, DEFAULT_MOOD_VALUE);
+        mTodayComment = mSharedPreferences.getString(PREF_KEY_TODAY_COMMENT, "");
+        mHistory = mSharedPreferences.getString(PREF_MOOD_HISTORY, "");
         mMoodHistory = new MoodHistory(mHistory);
         // If there is something saved, show chart and history buttons
         if(!mHistory.equals("")) {
             findViewById(R.id.btnChart).setVisibility(View.VISIBLE);
             findViewById(R.id.btnHistory).setVisibility(View.VISIBLE);
         }
+
+        System.out.println("MainActivity:: onCreate() history = " + mHistory);
 
         mMainLayout = findViewById(R.id.mainLayout);
         mSmiley = findViewById(R.id.imgSmiley);
@@ -95,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements
             mTodayMood = DEFAULT_MOOD_VALUE;
             mTodayComment = "";
 
-            mPreferences.edit()
+            mSharedPreferences.edit()
                     .putInt(PREF_KEY_LAST_DATE, mTodayNumber)
                     .putInt(PREF_KEY_TODAY_MOOD, mTodayMood)
                     .putString(PREF_KEY_TODAY_COMMENT, mTodayComment)
@@ -135,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements
             mTodayComment = "";
         }
         mTodayMood = mood;
-        mPreferences.edit().putInt(PREF_KEY_TODAY_MOOD, mTodayMood).apply();
+        mSharedPreferences.edit().putInt(PREF_KEY_TODAY_MOOD, mTodayMood).apply();
         displayMood(mood);
     }
 
@@ -158,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements
                         // Save comment for today
                         mTodayComment = etUserInput.getText().toString();
                         // Update SharedPreferences
-                        mPreferences.edit().putString(PREF_KEY_TODAY_COMMENT, mTodayComment).apply();
+                        mSharedPreferences.edit().putString(PREF_KEY_TODAY_COMMENT, mTodayComment).apply();
                         Toast.makeText(getApplicationContext(), "Votre commentaire a bien été enregistré.", Toast.LENGTH_SHORT).show();
                     }
                 })

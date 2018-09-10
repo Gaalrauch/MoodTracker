@@ -19,7 +19,8 @@ import fr.hironic.moodtracker.tools.DateManager;
 
 public class HistoryActivity extends AppCompatActivity {
 
-    private SharedPreferences mPreferences;
+    private SharedPreferences mSharedPreferences;
+    public static final String PREF_KEY_SHARED_KEY = "MOOD_TRACKER";
     public static final String PREF_MOOD_HISTORY = "MOOD_HISTORY";
 
     @Override
@@ -27,9 +28,10 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        mPreferences = getPreferences(MODE_PRIVATE);
-        String history = mPreferences.getString(PREF_MOOD_HISTORY, "");
+        mSharedPreferences = getSharedPreferences(PREF_KEY_SHARED_KEY, MODE_PRIVATE);
+        String history = mSharedPreferences.getString(PREF_MOOD_HISTORY, "");
 
+        System.out.println("HistoryActivity:: onCreate() history = " + history);
         MoodHistory mMoodHistory = new MoodHistory(history);
         JSONArray moods = mMoodHistory.getMoods();
 

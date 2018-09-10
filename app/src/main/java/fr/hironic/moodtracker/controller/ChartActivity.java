@@ -1,5 +1,6 @@
 package fr.hironic.moodtracker.controller;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +21,9 @@ import fr.hironic.moodtracker.model.MoodHistory;
 
 public class ChartActivity extends AppCompatActivity {
 
-
+    private SharedPreferences mSharedPreferences;
+    public static final String PREF_KEY_SHARED_KEY = "MOOD_TRACKER";
+    public static final String PREF_MOOD_HISTORY = "MOOD_HISTORY";
     private int[] mMoodsCount;
 
     @Override
@@ -29,12 +32,16 @@ public class ChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chart);
 
         mMoodsCount = new int[] { 0, 0, 0, 0, 0 };
-        CountMoods();
-        GenerateChart();
+
+        mSharedPreferences = getSharedPreferences(PREF_KEY_SHARED_KEY, MODE_PRIVATE);
+        String history = mSharedPreferences.getString(PREF_MOOD_HISTORY, "");
+        countMoods(history);
+
+        generateChart();
     }
 
-    private void CountMoods() {
-        MoodHistory moodHistory = new MoodHistory(this);
+    private void countMoods(String history) {
+        MoodHistory moodHistory = new MoodHistory(history);
         JSONArray moods = moodHistory.getMoods();
         for(int i = 0; i < moods.length(); i++) {
             try {
@@ -47,7 +54,7 @@ public class ChartActivity extends AppCompatActivity {
         }
     }
 
-    private void GenerateChart() {
+    private void generateChart() {
 
         PieChart pieChart = findViewById(R.id.piechart);
 
