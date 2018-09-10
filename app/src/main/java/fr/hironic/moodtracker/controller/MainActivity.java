@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements
     public static final String PREF_KEY_LAST_DATE = "LAST_DATE";
     public static final String PREF_KEY_TODAY_MOOD = "TODAY_MOOD";
     public static final String PREF_KEY_TODAY_COMMENT = "TODAY_COMMENT";
-    private String mLastDate;
+    private int mTodayNumber;
     private int mTodayMood;
     private String mTodayComment;
 
@@ -42,16 +41,13 @@ public class MainActivity extends AppCompatActivity implements
     private ImageView mSmiley;
     private GestureDetectorCompat mGestureDetector;
 
-    private float mLastMotionY;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mPreferences = getPreferences(MODE_PRIVATE);
-        mLastDate = mPreferences.getString(PREF_KEY_LAST_DATE, "Never");
+        mTodayNumber = mPreferences.getInt(PREF_KEY_LAST_DATE, 0);
         mTodayMood = mPreferences.getInt(PREF_KEY_TODAY_MOOD, DEFAULT_MOOD_VALUE);
         mTodayComment = mPreferences.getString(PREF_KEY_TODAY_COMMENT, "");
 
@@ -72,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements
 
         selectMood(mTodayMood);
 
+        DateManager.getTodayNumber();
 
         findViewById(R.id.btnComment).setOnTouchListener(this);
         findViewById(R.id.btnHistory).setOnTouchListener(this);
@@ -80,22 +77,22 @@ public class MainActivity extends AppCompatActivity implements
 
     private void CheckForNewDay() {
 
-        String currentDate = DateManager.GetTodayDate();
-        if(!currentDate.equals(mLastDate)) {
+        int currentDayNumber = DateManager.getTodayNumber();
+        if(currentDayNumber != mTodayNumber) {
 
-            if(!mLastDate.equals("Never")) { // There was something to save, then save it
-                mMoodHistory.SaveMood(mLastDate, mTodayMood, mTodayComment);
+            if(mTodayNumber > 0) { // There was something to save, then save it
+                mMoodHistory.SaveMood(mTodayNumber, mTodayMood, mTodayComment);
                 // In case there was no history before, show chart and history buttons
                 findViewById(R.id.btnChart).setVisibility(View.VISIBLE);
                 findViewById(R.id.btnHistory).setVisibility(View.VISIBLE);
             }
 
-            mLastDate = currentDate;
+            mTodayNumber = currentDayNumber;
             mTodayMood = DEFAULT_MOOD_VALUE;
             mTodayComment = "";
 
             mPreferences.edit()
-                    .putString(PREF_KEY_LAST_DATE, mLastDate)
+                    .putInt(PREF_KEY_LAST_DATE, mTodayNumber)
                     .putInt(PREF_KEY_TODAY_MOOD, mTodayMood)
                     .putString(PREF_KEY_TODAY_COMMENT, mTodayComment)
                     .apply();

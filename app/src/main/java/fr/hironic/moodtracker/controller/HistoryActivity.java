@@ -36,7 +36,7 @@ public class HistoryActivity extends AppCompatActivity {
                 R.color.light_sage,
                 R.color.banana_yellow };
 
-        String currentDate = DateManager.GetTodayDate();
+        int currentDay = DateManager.getTodayNumber();
 
         for(int i = 0; i < 7; i++) {
 
@@ -52,9 +52,9 @@ public class HistoryActivity extends AppCompatActivity {
                     layout.setVisibility(View.VISIBLE);
 
                     layout.setMaxWidth(Math.round(screenWidth * 0.4f + screenWidth * 0.15f * moodID));
-                    String date = moodData.getString(0);
+                    int dayNumber = moodData.getInt(0);
 
-                    int days = DateManager.GetDaysBetweenTwoDates(currentDate, date);
+                    int days = DateManager.GetDaysBetweenTwoDates(currentDay, dayNumber);
                     String text;
                     switch (days) {
                         case 1:

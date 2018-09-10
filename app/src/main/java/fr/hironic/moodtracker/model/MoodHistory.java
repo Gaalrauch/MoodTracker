@@ -25,11 +25,11 @@ public class MoodHistory {
         ReloadMoodsFromFile();
     }
 
-    public void SaveMood(String date, int mood, String comment) {
+    public void SaveMood(int dayNumber, int mood, String comment) {
 
         try {
             JSONArray moodData = new JSONArray();
-            moodData.put(date);
+            moodData.put(dayNumber);
             moodData.put(mood);
             moodData.put(comment);
             mMoods.put(moodData.toString());
