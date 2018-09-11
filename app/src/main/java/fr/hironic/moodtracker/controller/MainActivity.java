@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import fr.hironic.moodtracker.R;
-import fr.hironic.moodtracker.model.MoodHistory;
+import fr.hironic.moodtracker.model.MoodsHistory;
 import fr.hironic.moodtracker.tools.DateManager;
 
 import static fr.hironic.moodtracker.Constants.DEFAULT_MOOD_VALUE;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements
         mTodayComment = mPreferences.getString(PREF_KEY_TODAY_COMMENT, "");
         mHistory = mPreferences.getString(PREF_MOOD_HISTORY, "");
 
-        MoodHistory.setMoods(mHistory);
+        MoodsHistory.setMoods(mHistory);
         // If there is something saved, show chart and history buttons
         if(!mHistory.equals("")) {
             findViewById(R.id.btnChart).setVisibility(View.VISIBLE);
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements
         if(currentDayNumber != mTodayNumber) {
 
             if(mTodayNumber > 0) { // There was something to save, then save it
-                mHistory = MoodHistory.addMoodToHistory(mTodayNumber, mTodayMood, mTodayComment);
+                mHistory = MoodsHistory.addMoodToHistory(mTodayNumber, mTodayMood, mTodayComment);
                 // In case there was no history before, show chart and history buttons
                 findViewById(R.id.btnChart).setVisibility(View.VISIBLE);
                 findViewById(R.id.btnHistory).setVisibility(View.VISIBLE);

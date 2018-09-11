@@ -12,7 +12,7 @@ import android.widget.Toast;
 import org.json.JSONArray;
 
 import fr.hironic.moodtracker.R;
-import fr.hironic.moodtracker.model.MoodHistory;
+import fr.hironic.moodtracker.model.MoodsHistory;
 import fr.hironic.moodtracker.tools.DateManager;
 
 import static fr.hironic.moodtracker.Constants.MOOD_COLORS;
@@ -32,7 +32,7 @@ public class HistoryActivity extends AppCompatActivity {
      */
     private void updateViews() {
 
-        JSONArray moods = MoodHistory.getMoods();
+        JSONArray moods = MoodsHistory.getMoods();
 
         int currentDay = DateManager.getTodayNumber();
 

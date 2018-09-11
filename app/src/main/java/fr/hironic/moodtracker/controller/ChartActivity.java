@@ -15,7 +15,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 
 import fr.hironic.moodtracker.R;
-import fr.hironic.moodtracker.model.MoodHistory;
+import fr.hironic.moodtracker.model.MoodsHistory;
 import fr.hironic.moodtracker.tools.ChartValueFormatter;
 
 import static fr.hironic.moodtracker.Constants.MOOD_COLORS;
@@ -39,7 +39,7 @@ public class ChartActivity extends AppCompatActivity {
      * Count how many time each moods has been used
      */
     private void countMoods() {
-        JSONArray moods = MoodHistory.getMoods();
+        JSONArray moods = MoodsHistory.getMoods();
         for(int i = 0; i < moods.length(); i++) {
             try {
                 JSONArray moodData = new JSONArray(moods.getString(i));

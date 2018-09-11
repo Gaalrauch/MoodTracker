@@ -2,7 +2,7 @@ package fr.hironic.moodtracker.model;
 
 import org.json.JSONArray;
 
-public class MoodHistory {
+public class MoodsHistory {
 
     private static JSONArray mMoods; // moods history
 
