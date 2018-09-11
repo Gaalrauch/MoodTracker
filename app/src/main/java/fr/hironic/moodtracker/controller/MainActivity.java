@@ -22,7 +22,6 @@ import fr.hironic.moodtracker.model.MoodHistory;
 import fr.hironic.moodtracker.tools.DateManager;
 
 import static fr.hironic.moodtracker.Constants.DEFAULT_MOOD_VALUE;
-import static fr.hironic.moodtracker.Constants.PREF_KEY_SHARED_KEY;
 import static fr.hironic.moodtracker.Constants.PREF_KEY_TODAY_NUMBER;
 import static fr.hironic.moodtracker.Constants.PREF_KEY_TODAY_COMMENT;
 import static fr.hironic.moodtracker.Constants.PREF_KEY_TODAY_MOOD;
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements
         View.OnTouchListener,
         GestureDetector.OnGestureListener {
 
-    private SharedPreferences mSharedPreferences;
+    private SharedPreferences mPreferences;
 
     private int mTodayNumber;
     private int mTodayMood;
@@ -48,11 +47,11 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSharedPreferences = getSharedPreferences(PREF_KEY_SHARED_KEY, MODE_PRIVATE);
-        mTodayNumber = mSharedPreferences.getInt(PREF_KEY_TODAY_NUMBER, 0);
-        mTodayMood = mSharedPreferences.getInt(PREF_KEY_TODAY_MOOD, DEFAULT_MOOD_VALUE);
-        mTodayComment = mSharedPreferences.getString(PREF_KEY_TODAY_COMMENT, "");
-        mHistory = mSharedPreferences.getString(PREF_MOOD_HISTORY, "");
+        mPreferences = getPreferences(MODE_PRIVATE);
+        mTodayNumber = mPreferences.getInt(PREF_KEY_TODAY_NUMBER, 0);
+        mTodayMood = mPreferences.getInt(PREF_KEY_TODAY_MOOD, DEFAULT_MOOD_VALUE);
+        mTodayComment = mPreferences.getString(PREF_KEY_TODAY_COMMENT, "");
+        mHistory = mPreferences.getString(PREF_MOOD_HISTORY, "");
 
         MoodHistory.setMoods(mHistory);
         // If there is something saved, show chart and history buttons
@@ -97,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements
             mTodayMood = DEFAULT_MOOD_VALUE;
             mTodayComment = "";
 
-            mSharedPreferences.edit()
+            mPreferences.edit()
                     .putInt(PREF_KEY_TODAY_NUMBER, mTodayNumber)
                     .putInt(PREF_KEY_TODAY_MOOD, mTodayMood)
                     .putString(PREF_KEY_TODAY_COMMENT, mTodayComment)
@@ -137,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements
             mTodayComment = "";
         }
         mTodayMood = mood;
-        mSharedPreferences.edit().putInt(PREF_KEY_TODAY_MOOD, mTodayMood).apply();
+        mPreferences.edit().putInt(PREF_KEY_TODAY_MOOD, mTodayMood).apply();
         displayMood(mood);
     }
 
@@ -160,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements
                         // Save comment for today
                         mTodayComment = etUserInput.getText().toString();
                         // Update SharedPreferences
-                        mSharedPreferences.edit().putString(PREF_KEY_TODAY_COMMENT, mTodayComment).apply();
+                        mPreferences.edit().putString(PREF_KEY_TODAY_COMMENT, mTodayComment).apply();
                         Toast.makeText(getApplicationContext(), "Votre commentaire a bien été enregistré.", Toast.LENGTH_SHORT).show();
                     }
                 })

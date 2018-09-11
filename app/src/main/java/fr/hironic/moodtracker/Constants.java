@@ -2,7 +2,6 @@ package fr.hironic.moodtracker;
 
 public class Constants {
 
-    public static final String PREF_KEY_SHARED_KEY = "MOOD_TRACKER";
     public static final String PREF_KEY_TODAY_NUMBER = "LAST_DATE";
     public static final String PREF_KEY_TODAY_MOOD = "TODAY_MOOD";
     public static final String PREF_KEY_TODAY_COMMENT = "TODAY_COMMENT";
