@@ -10,11 +10,10 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
 
 import fr.hironic.moodtracker.R;
+import fr.hironic.moodtracker.model.Mood;
 import fr.hironic.moodtracker.model.MoodsHistory;
 import fr.hironic.moodtracker.tools.ChartValueFormatter;
 
@@ -48,17 +47,12 @@ public class ChartActivity extends AppCompatActivity {
     private void countMoods(String history) {
 
         MoodsHistory moodsHistory = new MoodsHistory(history);
-        JSONArray moods = moodsHistory.getMoods();
+        ArrayList<Mood> moods = moodsHistory.getMoods();
 
         mMoodsCount = new int[] { 0, 0, 0, 0, 0 };
-        for(int i = 0; i < moods.length(); i++) {
-            try {
-                JSONArray moodData = new JSONArray(moods.getString(i));
-                int moodID = moodData.getInt(1);
-                mMoodsCount[moodID]++;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        for(int i = 0; i < moods.size(); i++) {
+            int type = moods.get(i).getType();
+            mMoodsCount[type]++;
         }
     }
 

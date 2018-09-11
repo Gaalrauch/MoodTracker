@@ -9,9 +9,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
+import java.util.ArrayList;
 
 import fr.hironic.moodtracker.R;
+import fr.hironic.moodtracker.model.Mood;
 import fr.hironic.moodtracker.model.MoodsHistory;
 import fr.hironic.moodtracker.tools.GetTodayNumber;
 
@@ -39,23 +40,20 @@ public class HistoryActivity extends AppCompatActivity {
 
         String history = getIntent().getStringExtra("history");
         MoodsHistory moodsHistory = new MoodsHistory(history);
-        JSONArray moods = moodsHistory.getMoods();
+        ArrayList<Mood> moods = moodsHistory.getMoods();
 
         for(int i = 0; i < 7; i++) {
 
-            if (i < moods.length()) { // Parse data to update this view
-                try {
-                    JSONArray moodData = new JSONArray(moods.getString(i));
-                    int dayNumber = moodData.getInt(0);
-                    int mood = moodData.getInt(1);
-                    String comment = moodData.getString(2);
-                    int width = Math.round(screenWidth * 0.4f + screenWidth * 0.15f * mood);
+            if (i < moods.size()) { // Parse data to update this view
 
-                    updateView(i, width, mood, currentDay - dayNumber, comment);
+                Mood mood = moods.get(i);
+                int dayNumber = mood.getDayNumber();
+                int type = mood.getType();
+                String comment = mood.getComment();
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                int width = Math.round(screenWidth * 0.4f + screenWidth * 0.15f * type);
+                updateView(i, width, type, currentDay - dayNumber, comment);
+
             } else { // Hide this view
                 updateView(i, 0, 0, 0, "");
             }

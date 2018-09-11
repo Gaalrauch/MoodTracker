@@ -31,8 +31,8 @@ import static fr.hironic.moodtracker.Constants.PREF_MOOD_HISTORY;
 
 /**
  * Created by Gaalrauch
- * Display a smiley representing your mood
- * Allows you to :
+ * Display a smiley representing user's mood
+ * Allows user to :
  *  - fling the current smiley to select another mood
  *  - add a comment
  * Moods and their comment are saved on a new day
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements
     private SharedPreferences mPreferences; // Contains mTodayNumber, mTodayMood, mTodayComment and mHistory
 
     private int mTodayNumber; // Number of days since January 1st 1970
-    private int mTodayMood; // Current mood value for today from 0 (sad) to 4 (super happy)
+    private int mTodayMood; // Current mood type for today from 0 (sad) to 4 (super happy)
     private String mTodayComment; // Current comment for today mood
     private String mHistory; // Moods history
 
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements
      * Get the number of days since January 1st 1970
      * Compares it to the current value of mTodayNumber
      * If the value is not the same we know the day has changed
-     * If mTodayNumber was not zero we add current values (day number, mood value, comment) to mHistory
+     * If mTodayNumber was not zero we add current values (day number, mood type, comment) to mHistory
      */
     private void checkForNewDay() {
 
@@ -138,17 +138,17 @@ public class MainActivity extends AppCompatActivity implements
      * Reset comment to an empty String if necessary
      * Update mPreferences
      * Call displayMood() to display visual changes
-     * @param mood mood value from 0 (sad) to 4 (super happy)
+     * @param type mood value from 0 (sad) to 4 (super happy)
      */
-    private void selectMood(int mood) {
+    private void selectMood(int type) {
         checkForNewDay();
         // Remove current comment if we change mood
-        if(mood != mTodayMood) {
+        if(type != mTodayMood) {
             mTodayComment = "";
-            mTodayMood = mood;
+            mTodayMood = type;
         }
         mPreferences.edit().putInt(PREF_KEY_TODAY_MOOD, mTodayMood).apply();
-        displayMood(mood);
+        displayMood(type);
     }
 
     /**
@@ -220,10 +220,10 @@ public class MainActivity extends AppCompatActivity implements
         if(Math.abs(motionEvent.getX() - motionEvent1.getX()) > Math.abs(motionEvent.getY() - motionEvent1.getY())) { // User flings horizontally
             return false;
         }
-        if(motionEvent.getY() > motionEvent1.getY()) { // Fling in top direction, increase mood value
+        if(motionEvent.getY() > motionEvent1.getY()) { // Fling in top direction, increase mood type
             if(mTodayMood > 3) return false;
             selectMood(mTodayMood + 1);
-        } else { // Fling down, decrease mood value
+        } else { // Fling down, decrease mood type
             if(mTodayMood == 0) return false;
             selectMood(mTodayMood - 1);
         }
