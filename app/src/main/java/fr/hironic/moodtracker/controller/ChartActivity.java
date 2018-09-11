@@ -20,6 +20,13 @@ import fr.hironic.moodtracker.tools.ChartValueFormatter;
 
 import static fr.hironic.moodtracker.Constants.MOOD_COLORS;
 
+/**
+ * Created by Gaalrauch
+ * Get moods history data, parse data to count use of each mood
+ * Display a pie chart using MPAndroidChart API
+ *
+ */
+
 public class ChartActivity extends AppCompatActivity {
 
     private int[] mMoodsCount;
@@ -52,7 +59,7 @@ public class ChartActivity extends AppCompatActivity {
     }
 
     /**
-     * Use MPAndroid API to display a pie chart
+     * Use MPAndroidChart API to display the pie chart
      */
     private void generateChart() {
 
