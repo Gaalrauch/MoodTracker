@@ -3,10 +3,16 @@ package fr.hironic.moodtracker.tools;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public abstract class DateManager {
+/**
+ * Created by Gaalrauch
+ * Get "today number", number of days since January 1st, 1970
+ *
+ */
+
+public abstract class GetTodayNumber {
 
     /**
-     * Calculate the "day number", number of days since 1st January 1970
+     * Calculate the "day number"
      * Create a calendar with default time zone to get the date in user's TimeZone
      * Create another calendar using GMT TimeZone
      * Set this new calendar to the date of the first calendar

@@ -13,7 +13,7 @@ import org.json.JSONArray;
 
 import fr.hironic.moodtracker.R;
 import fr.hironic.moodtracker.model.MoodsHistory;
-import fr.hironic.moodtracker.tools.DateManager;
+import fr.hironic.moodtracker.tools.GetTodayNumber;
 
 import static fr.hironic.moodtracker.Constants.MOOD_COLORS;
 
@@ -31,7 +31,7 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        int currentDay = DateManager.getTodayNumber();
+        int currentDay = GetTodayNumber.getTodayNumber();
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
