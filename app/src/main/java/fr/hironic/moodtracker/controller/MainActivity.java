@@ -217,17 +217,17 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float velX, float velY) {
-
-        if(Math.abs(velX) > Math.abs(velY)) { // User fling horizontally, we don't care
+        if(Math.abs(motionEvent.getX() - motionEvent1.getX()) > Math.abs(motionEvent.getY() - motionEvent1.getY())) { // User flings horizontally
             return false;
         }
-        if(velY < 0) { // Fling in top direction, increase mood value
+        if(motionEvent.getY() > motionEvent1.getY()) { // Fling in top direction, increase mood value
             if(mTodayMood > 3) return false;
             selectMood(mTodayMood + 1);
         } else { // Fling down, decrease mood value
             if(mTodayMood == 0) return false;
             selectMood(mTodayMood - 1);
         }
+
         return true;
     }
 
