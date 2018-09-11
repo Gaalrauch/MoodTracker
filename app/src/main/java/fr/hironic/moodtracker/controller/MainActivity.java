@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements
 
         alertDialogBuilderUserInput
                 .setCancelable(false)
-                .setPositiveButton(getString(R.string.mood_comment_registered), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.mood_comment_btn_validate), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogBox, int id) {
                         // Save comment for today
                         mTodayComment = etUserInput.getText().toString();

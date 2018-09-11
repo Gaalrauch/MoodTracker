@@ -10,7 +10,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Commentaire"
+        android:text="@string/mood_comment_box_tiltle"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/warm_grey"
         android:textSize="12sp" />
@@ -19,6 +19,6 @@
         android:id="@+id/etComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Votre commentaire"
+        android:hint="@string/mood_comment_hint"
         android:inputType="text" />
 </LinearLayout>
