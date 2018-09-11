@@ -4,12 +4,12 @@ import org.json.JSONArray;
 
 public class MoodsHistory {
 
-    private static JSONArray mMoods; // moods history
+    private JSONArray mMoods; // moods history in JSONArray format, contains 0 to 7 moods, with their day number, type and comment.
 
     /**
      * Generate a JSONArray from history
      */
-    public static void setMoods(String history) {
+    public MoodsHistory (String history) {
         mMoods = new JSONArray();
         if(!history.equals("")) {
             try {
@@ -19,21 +19,22 @@ public class MoodsHistory {
             }
         }
     }
+
     /**
-     * Return a JSONArray containing 0 to 7 moods from history, with their type and comment.
+     * Get moods in JSONArray format
+     * @return mMoods
      */
-    public static JSONArray getMoods() {
+    public JSONArray getMoods() {
         return mMoods;
     }
 
     /**
-     * Add a new mood to mMoods and return the new history in a String
+     * Add a new mood to mMoods
      * @param dayNumber number of days since January 1st, 1970
      * @param mood mood value from 0 (sad) to 4 (super happy)
      * @param comment mood comment, may be an empty String
-     * @return mMoods.toString()
      */
-    public static String addMoodToHistory(int dayNumber, int mood, String comment) {
+    public void addMoodToHistory(int dayNumber, int mood, String comment) {
         try {
             JSONArray moodData = new JSONArray();
             moodData.put(dayNumber);
@@ -46,6 +47,13 @@ public class MoodsHistory {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Get moods history in String
+     * @return mMoods in String format, ready to be saved in SharedPreferences
+     */
+    public String getHistory() {
         return mMoods.toString();
     }
 }

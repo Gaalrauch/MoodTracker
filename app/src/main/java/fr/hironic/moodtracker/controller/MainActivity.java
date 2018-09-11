@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements
     private ImageView mSmiley; // Used to update smiley picture
     private GestureDetectorCompat mGestureDetector; // Used to detect fling
 
+    private MoodsHistory mMoodsHistory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,14 +65,13 @@ public class MainActivity extends AppCompatActivity implements
         mTodayComment = mPreferences.getString(PREF_KEY_TODAY_COMMENT, "");
         mHistory = mPreferences.getString(PREF_MOOD_HISTORY, "");
 
-        MoodsHistory.setMoods(mHistory);
+        mMoodsHistory = new MoodsHistory(mHistory);
+
         // If there is something saved, show chart and history buttons
         if(!mHistory.equals("")) {
             findViewById(R.id.btnChart).setVisibility(View.VISIBLE);
             findViewById(R.id.btnHistory).setVisibility(View.VISIBLE);
         }
-
-        System.out.println("MainActivity:: onCreate() history = " + mHistory);
 
         mMainLayout = findViewById(R.id.mainLayout);
         mSmiley = findViewById(R.id.imgSmiley);
@@ -100,7 +101,8 @@ public class MainActivity extends AppCompatActivity implements
         if(currentDayNumber != mTodayNumber) {
 
             if(mTodayNumber > 0) { // There was something to save, then save it
-                mHistory = MoodsHistory.addMoodToHistory(mTodayNumber, mTodayMood, mTodayComment);
+                mMoodsHistory.addMoodToHistory(mTodayNumber, mTodayMood, mTodayComment);
+                mHistory = mMoodsHistory.getHistory();
                 // In case there was no history before, show chart and history buttons
                 findViewById(R.id.btnChart).setVisibility(View.VISIBLE);
                 findViewById(R.id.btnHistory).setVisibility(View.VISIBLE);
@@ -267,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements
 
             checkForNewDay();
             Intent intent = new Intent(MainActivity.this, ChartActivity.class);
+            intent.putExtra("history", mHistory);
             startActivity(intent);
             return true;
         }
@@ -275,6 +278,7 @@ public class MainActivity extends AppCompatActivity implements
 
             checkForNewDay();
             Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+            intent.putExtra("history", mHistory);
             startActivity(intent);
             return true;
         }

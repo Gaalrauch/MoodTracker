@@ -36,8 +36,8 @@ public class ChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
 
-        mMoodsCount = new int[] { 0, 0, 0, 0, 0 };
-        countMoods();
+        String history = getIntent().getStringExtra("history");
+        countMoods(history);
 
         generateChart();
     }
@@ -45,8 +45,12 @@ public class ChartActivity extends AppCompatActivity {
     /**
      * Count how many time each moods has been used
      */
-    private void countMoods() {
-        JSONArray moods = MoodsHistory.getMoods();
+    private void countMoods(String history) {
+
+        MoodsHistory moodsHistory = new MoodsHistory(history);
+        JSONArray moods = moodsHistory.getMoods();
+
+        mMoodsCount = new int[] { 0, 0, 0, 0, 0 };
         for(int i = 0; i < moods.length(); i++) {
             try {
                 JSONArray moodData = new JSONArray(moods.getString(i));

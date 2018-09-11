@@ -1,8 +1,8 @@
 package fr.hironic.moodtracker.controller;
 
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +37,10 @@ public class HistoryActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int screenWidth = metrics.widthPixels;
 
-        JSONArray moods = MoodsHistory.getMoods();
+        String history = getIntent().getStringExtra("history");
+        MoodsHistory moodsHistory = new MoodsHistory(history);
+        JSONArray moods = moodsHistory.getMoods();
+
         for(int i = 0; i < 7; i++) {
 
             if (i < moods.length()) { // Parse data to update this view
