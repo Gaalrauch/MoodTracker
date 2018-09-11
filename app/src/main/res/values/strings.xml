@@ -5,4 +5,7 @@
     <string name="history_two_days_ago">2 days ago</string>
     <string name="history_one_week_ago">1 week ago</string>
     <string name="history_x_days_ago">%1$d days ago</string>
+    <string name="mood_comment_registered">Your comment has been registered</string>
+    <string name="mood_comment_btn_validate">Validate</string>
+    <string name="mood_comment_btn_cancel">Cancel</string>
 </resources>

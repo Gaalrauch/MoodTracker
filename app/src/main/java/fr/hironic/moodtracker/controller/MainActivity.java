@@ -154,17 +154,17 @@ public class MainActivity extends AppCompatActivity implements
 
         alertDialogBuilderUserInput
                 .setCancelable(false)
-                .setPositiveButton("VALIDER", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.mood_comment_registered), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogBox, int id) {
                         // Save comment for today
                         mTodayComment = etUserInput.getText().toString();
                         // Update SharedPreferences
                         mPreferences.edit().putString(PREF_KEY_TODAY_COMMENT, mTodayComment).apply();
-                        Toast.makeText(getApplicationContext(), "Votre commentaire a bien été enregistré.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.mood_comment_registered), Toast.LENGTH_SHORT).show();
                     }
                 })
 
-                .setNegativeButton("ANNULER",
+                .setNegativeButton(getString(R.string.mood_comment_btn_cancel),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogBox, int id) {
                                 dialogBox.cancel();
