@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements
         if(currentDayNumber != mTodayNumber) {
 
             if(mTodayNumber > 0) { // There was something to save, then save it
-                mHistory = MoodHistory.saveMood(mTodayNumber, mTodayMood, mTodayComment);
+                mHistory = MoodHistory.addMoodToHistory(mTodayNumber, mTodayMood, mTodayComment);
                 // In case there was no history before, show chart and history buttons
                 findViewById(R.id.btnChart).setVisibility(View.VISIBLE);
                 findViewById(R.id.btnHistory).setVisibility(View.VISIBLE);

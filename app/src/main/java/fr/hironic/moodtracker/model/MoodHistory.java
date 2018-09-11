@@ -33,7 +33,7 @@ public class MoodHistory {
      * @param comment mood comment, may be an empty String
      * @return mMoods.toString()
      */
-    public static String saveMood(int dayNumber, int mood, String comment) {
+    public static String addMoodToHistory(int dayNumber, int mood, String comment) {
         try {
             JSONArray moodData = new JSONArray();
             moodData.put(dayNumber);
