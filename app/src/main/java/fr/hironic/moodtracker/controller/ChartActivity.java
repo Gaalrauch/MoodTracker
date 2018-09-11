@@ -61,11 +61,10 @@ public class ChartActivity extends AppCompatActivity {
         ArrayList<Entry> yValues = new ArrayList<>();
         ArrayList<String> xValues = new ArrayList<>();
 
-        String[] titles = new String[]{ "Triste", "Mécontent", "Neutre", "Heureux", "Aux anges" };
         for(int i= 0; i < 5; i++) {
             //if(mMoodsCount[i] > 0) {
                 yValues.add(new Entry(mMoodsCount[i], i));
-                xValues.add(titles[i]);
+                xValues.add(""); // entry title, empty here, we hide titles
             //}
         }
 
