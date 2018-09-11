@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MoodTracker</string>
+    <string name="history_yesterday">Hier</string>
+    <string name="history_two_days_ago">Avant-hier</string>
+    <string name="history_one_week_ago">Il y a une semaine</string>
+    <string name="history_x_days_ago">Il y a %1$d jours</string>
+    <string name="mood_comment_box_tiltle">Modifier le commentaire</string>
+    <string name="mood_comment_hint">Votre commentaire..</string>
+    <string name="mood_comment_btn_cancel">Annuler</string>
+    <string name="mood_comment_btn_validate">Valider</string>
+    <string name="mood_comment_registered">Votre commentaire a bien été enregistré.</string>
+</resources>
