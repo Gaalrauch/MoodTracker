@@ -17,6 +17,13 @@ import fr.hironic.moodtracker.tools.DateManager;
 
 import static fr.hironic.moodtracker.Constants.MOOD_COLORS;
 
+/**
+ * Created by Gaalrauch
+ * Get moods history data, parse it do display previous days mood
+ * User can see last seven registered moods with their comment
+ *
+ */
+
 public class HistoryActivity extends AppCompatActivity {
 
     @Override
