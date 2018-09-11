@@ -24,73 +24,90 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        updateViews();
-    }
-
-    /**
-     * Update moods view to display background color, days and eventually add a comment button
-     */
-    private void updateViews() {
-
-        JSONArray moods = MoodsHistory.getMoods();
-
         int currentDay = DateManager.getTodayNumber();
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int screenWidth = metrics.widthPixels;
 
+        JSONArray moods = MoodsHistory.getMoods();
         for(int i = 0; i < 7; i++) {
 
-            int layoutId = getResources().getIdentifier("llHistory" + i, "id", getPackageName());
-            ConstraintLayout layout = findViewById(layoutId);
-
-            if(i < moods.length()) {
-                // Show this mood
+            if (i < moods.length()) { // Parse data to update this view
                 try {
                     JSONArray moodData = new JSONArray(moods.getString(i));
-                    int moodID = moodData.getInt(1);
-                    layout.setBackgroundColor(getResources().getColor(MOOD_COLORS[moodID]));
-                    layout.setVisibility(View.VISIBLE);
-
-                    layout.setMaxWidth(Math.round(screenWidth * 0.4f + screenWidth * 0.15f * moodID));
                     int dayNumber = moodData.getInt(0);
+                    int mood = moodData.getInt(1);
+                    String comment = moodData.getString(2);
+                    int width = Math.round(screenWidth * 0.4f + screenWidth * 0.15f * mood);
 
-                    int days = currentDay - dayNumber;
-                    String text;
-                    switch (days) {
-                        case 1:
-                            text = getString(R.string.history_yesterday);
-                            break;
-                        case 2:
-                            text = getString(R.string.history_two_days_ago);
-                            break;
-                        case 7:
-                            text = getString(R.string.history_one_week_ago);
-                            break;
-                        default:
-                            text = getString(R.string.history_x_days_ago, days);
-                    }
-
-                    TextView textView = layout.findViewById(R.id.tvTime);
-                    textView.setText(text);
-
-                    final String comment = moodData.getString(2);
-                    if(!comment.equals("")) {
-                        Button button = layout.findViewById(R.id.btnComment);
-                        button.setVisibility(View.VISIBLE);
-                        button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(getApplicationContext(), comment, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
+                    updateView(i, width, mood, currentDay - dayNumber, comment);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else { // Hide this view
+                updateView(i, 0, 0, 0, "");
             }
         }
+
     }
+
+    /**
+     * Update the mood history view, hide it if not used
+     * @param id view number (from 0 to 6)
+     * @param width width in pixel for this view
+     * @param mood mood id (from 0 to 4) to select background color
+     * @param days days passed since this mood was registered
+     * @param comment comment of this mood, maybe be an empty String
+     */
+    private void updateView(int id, int width, int mood, int days, final String comment) {
+
+        int layoutId = getResources().getIdentifier("llHistory" + id, "id", getPackageName());
+        ConstraintLayout layout = findViewById(layoutId);
+
+        if(width > 0) {
+            layout.setBackgroundColor(getResources().getColor(MOOD_COLORS[mood]));
+            layout.setMaxWidth(width);
+
+            String text = daysToText(days);
+            TextView textView = layout.findViewById(R.id.tvTime);
+            textView.setText(text);
+
+            if(!comment.equals("")) {
+                Button button = layout.findViewById(R.id.btnComment);
+                button.setVisibility(View.VISIBLE);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(), comment, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        } else {
+            layout.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * Return x days ago or special case like Yesterday, 1 week ago,..
+     */
+    private String daysToText(int days) {
+        String text;
+        switch (days) {
+            case 1:
+                text = getString(R.string.history_yesterday);
+                break;
+            case 2:
+                text = getString(R.string.history_two_days_ago);
+                break;
+            case 7:
+                text = getString(R.string.history_one_week_ago);
+                break;
+            default:
+                text = getString(R.string.history_x_days_ago, days);
+        }
+        return text;
+    }
+
 }
