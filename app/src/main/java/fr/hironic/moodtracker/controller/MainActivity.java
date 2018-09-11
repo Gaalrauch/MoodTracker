@@ -27,20 +27,30 @@ import static fr.hironic.moodtracker.Constants.PREF_KEY_TODAY_COMMENT;
 import static fr.hironic.moodtracker.Constants.PREF_KEY_TODAY_MOOD;
 import static fr.hironic.moodtracker.Constants.PREF_MOOD_HISTORY;
 
+/**
+ * Created by Gaalrauch
+ * Display a smiley representing your mood
+ * Allows you to :
+ *  - fling the current smiley to select another mood
+ *  - add a comment
+ * Moods and their comment are saved on a new day
+ *
+ */
+
 public class MainActivity extends AppCompatActivity implements
         View.OnTouchListener,
         GestureDetector.OnGestureListener {
 
-    private SharedPreferences mPreferences;
+    private SharedPreferences mPreferences; // Contains mTodayNumber, mTodayMood, mTodayComment and mHistory
 
-    private int mTodayNumber;
-    private int mTodayMood;
-    private String mTodayComment;
-    private String mHistory;
+    private int mTodayNumber; // Number of days since January 1st 1970
+    private int mTodayMood; // Current mood value for today from 0 (sad) to 4 (super happy)
+    private String mTodayComment; // Current comment for today mood
+    private String mHistory; // Moods history
 
-    private ConstraintLayout mMainLayout;
-    private ImageView mSmiley;
-    private GestureDetectorCompat mGestureDetector;
+    private ConstraintLayout mMainLayout; // Used to update background color
+    private ImageView mSmiley; // Used to update smiley picture
+    private GestureDetectorCompat mGestureDetector; // Used to detect fling
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +81,6 @@ public class MainActivity extends AppCompatActivity implements
 
         selectMood(mTodayMood);
 
-        DateManager.getTodayNumber();
-
         findViewById(R.id.btnComment).setOnTouchListener(this);
         findViewById(R.id.btnHistory).setOnTouchListener(this);
         findViewById(R.id.btnChart).setOnTouchListener(this);
@@ -80,6 +88,12 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     * Get the number of days since January 1st 1970
+     * Compares it to the current value of mTodayNumber
+     * If the value is not the same we know the day has changed
+     * If mTodayNumber was not zero we add current values (day number, mood value, comment) to mHistory
+     */
     private void checkForNewDay() {
 
         int currentDayNumber = DateManager.getTodayNumber();
@@ -105,6 +119,10 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Update the background color and mood picture depending on mood value
+     * @param mood mood value from 0 (sad) to 4 (super happy)
+     */
     private void displayMood(int mood) {
         switch (mood) {
             case 0:
@@ -129,18 +147,30 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Check for new day before to save if necessary the current mood values (day number, mood, comment)
+     * Update current mood value
+     * Reset comment to an empty String if necessary
+     * Update mPreferences
+     * Call displayMood() to display visual changes
+     * @param mood mood value from 0 (sad) to 4 (super happy)
+     */
     private void selectMood(int mood) {
         checkForNewDay();
         // Remove current comment if we change mood
         if(mood != mTodayMood) {
             mTodayComment = "";
+            mTodayMood = mood;
         }
-        mTodayMood = mood;
         mPreferences.edit().putInt(PREF_KEY_TODAY_MOOD, mTodayMood).apply();
         displayMood(mood);
     }
 
-    private void openCommentForm() {
+    /**
+     * Open a dialog box to allow user to enter / edit a comment about his mood
+     * Commment is saved in mPreferences
+     */
+    private void openCommentDialogBox() {
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(MainActivity.this);
         final ViewGroup nullParent = null;
         View mView = layoutInflaterAndroid.inflate(R.layout.view_comment_dialogbox, nullParent);
@@ -203,13 +233,13 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float velX, float velY) {
 
-        if(Math.abs(velX) > Math.abs(velY)) {
+        if(Math.abs(velX) > Math.abs(velY)) { // User fling horizontally, we don't care
             return false;
         }
-        if(velY < 0) {
+        if(velY < 0) { // Fling in top direction, increase mood value
             if(mTodayMood > 3) return false;
             selectMood(mTodayMood + 1);
-        } else {
+        } else { // Fling down, decrease mood value
             if(mTodayMood == 0) return false;
             selectMood(mTodayMood - 1);
         }
@@ -251,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if(view.getId() == R.id.btnComment) {
 
-            openCommentForm();
+            openCommentDialogBox();
             return true;
         }
 
