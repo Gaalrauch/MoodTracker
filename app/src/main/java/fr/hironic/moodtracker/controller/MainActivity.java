@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity implements
     private String mTodayComment;
     private String mHistory;
 
-    private MoodHistory mMoodHistory;
-
     private ConstraintLayout mMainLayout;
     private ImageView mSmiley;
     private GestureDetectorCompat mGestureDetector;
@@ -55,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements
         mTodayMood = mSharedPreferences.getInt(PREF_KEY_TODAY_MOOD, DEFAULT_MOOD_VALUE);
         mTodayComment = mSharedPreferences.getString(PREF_KEY_TODAY_COMMENT, "");
         mHistory = mSharedPreferences.getString(PREF_MOOD_HISTORY, "");
-        mMoodHistory = new MoodHistory(mHistory);
+
+        MoodHistory.setMoods(mHistory);
         // If there is something saved, show chart and history buttons
         if(!mHistory.equals("")) {
             findViewById(R.id.btnChart).setVisibility(View.VISIBLE);
@@ -88,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements
         if(currentDayNumber != mTodayNumber) {
 
             if(mTodayNumber > 0) { // There was something to save, then save it
-                mHistory = mMoodHistory.saveMood(mTodayNumber, mTodayMood, mTodayComment);
+                mHistory = MoodHistory.saveMood(mTodayNumber, mTodayMood, mTodayComment);
                 // In case there was no history before, show chart and history buttons
                 findViewById(R.id.btnChart).setVisibility(View.VISIBLE);
                 findViewById(R.id.btnHistory).setVisibility(View.VISIBLE);

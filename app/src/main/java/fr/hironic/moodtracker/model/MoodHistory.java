@@ -4,13 +4,12 @@ import org.json.JSONArray;
 
 public class MoodHistory {
 
-    private JSONArray mMoods;
+    private static JSONArray mMoods; // moods history
 
     /**
      * Generate a JSONArray from history
-     * @param history
      */
-    public MoodHistory (String history) {
+    public static void setMoods(String history) {
         mMoods = new JSONArray();
         if(!history.equals("")) {
             try {
@@ -20,23 +19,21 @@ public class MoodHistory {
             }
         }
     }
-
     /**
      * Return a JSONArray containing 0 to 7 moods from history, with their type and comment.
-     * @return
      */
-    public JSONArray getMoods() {
+    public static JSONArray getMoods() {
         return mMoods;
     }
 
     /**
      * Add a new mood to mMoods and return the new history in a String
-     * @param dayNumber
-     * @param mood
-     * @param comment
-     * @return
+     * @param dayNumber number of days since January 1st, 1970
+     * @param mood mood value from 0 (sad) to 4 (super happy)
+     * @param comment mood comment, may be an empty String
+     * @return mMoods.toString()
      */
-    public String saveMood(int dayNumber, int mood, String comment) {
+    public static String saveMood(int dayNumber, int mood, String comment) {
         try {
             JSONArray moodData = new JSONArray();
             moodData.put(dayNumber);

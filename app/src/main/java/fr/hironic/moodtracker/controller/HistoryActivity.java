@@ -17,23 +17,13 @@ import fr.hironic.moodtracker.model.MoodHistory;
 import fr.hironic.moodtracker.tools.DateManager;
 
 import static fr.hironic.moodtracker.Constants.MOOD_COLORS;
-import static fr.hironic.moodtracker.Constants.PREF_KEY_SHARED_KEY;
-import static fr.hironic.moodtracker.Constants.PREF_MOOD_HISTORY;
 
 public class HistoryActivity extends AppCompatActivity {
-
-    JSONArray mMoods;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-
-        SharedPreferences preferences = getSharedPreferences(PREF_KEY_SHARED_KEY, MODE_PRIVATE);
-        String history = preferences.getString(PREF_MOOD_HISTORY, "");
-
-        MoodHistory mMoodHistory = new MoodHistory(history);
-        mMoods = mMoodHistory.getMoods();
 
         updateViews();
     }
@@ -42,6 +32,8 @@ public class HistoryActivity extends AppCompatActivity {
      * Update moods view to display background color, days and eventually add a comment button
      */
     private void updateViews() {
+
+        JSONArray moods = MoodHistory.getMoods();
 
         int currentDay = DateManager.getTodayNumber();
 
@@ -54,10 +46,10 @@ public class HistoryActivity extends AppCompatActivity {
             int layoutId = getResources().getIdentifier("llHistory" + i, "id", getPackageName());
             ConstraintLayout layout = findViewById(layoutId);
 
-            if(i < mMoods.length()) {
+            if(i < moods.length()) {
                 // Show this mood
                 try {
-                    JSONArray moodData = new JSONArray(mMoods.getString(i));
+                    JSONArray moodData = new JSONArray(moods.getString(i));
                     int moodID = moodData.getInt(1);
                     layout.setBackgroundColor(getResources().getColor(MOOD_COLORS[moodID]));
                     layout.setVisibility(View.VISIBLE);

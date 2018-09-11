@@ -10,7 +10,6 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import org.json.JSONArray;
 
@@ -18,10 +17,9 @@ import java.util.ArrayList;
 
 import fr.hironic.moodtracker.R;
 import fr.hironic.moodtracker.model.MoodHistory;
+import fr.hironic.moodtracker.tools.ChartValueFormatter;
 
 import static fr.hironic.moodtracker.Constants.MOOD_COLORS;
-import static fr.hironic.moodtracker.Constants.PREF_KEY_SHARED_KEY;
-import static fr.hironic.moodtracker.Constants.PREF_MOOD_HISTORY;
 
 public class ChartActivity extends AppCompatActivity {
 
@@ -33,21 +31,16 @@ public class ChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chart);
 
         mMoodsCount = new int[] { 0, 0, 0, 0, 0 };
-
-        SharedPreferences preferences = getSharedPreferences(PREF_KEY_SHARED_KEY, MODE_PRIVATE);
-        String history = preferences.getString(PREF_MOOD_HISTORY, "");
-        countMoods(history);
+        countMoods();
 
         generateChart();
     }
 
     /**
      * Count how many time each moods has been used
-     * @param history
      */
-    private void countMoods(String history) {
-        MoodHistory moodHistory = new MoodHistory(history);
-        JSONArray moods = moodHistory.getMoods();
+    private void countMoods() {
+        JSONArray moods = MoodHistory.getMoods();
         for(int i = 0; i < moods.length(); i++) {
             try {
                 JSONArray moodData = new JSONArray(moods.getString(i));
@@ -71,17 +64,17 @@ public class ChartActivity extends AppCompatActivity {
 
         String[] titles = new String[]{ "Triste", "Mécontent", "Neutre", "Heureux", "Aux anges" };
         for(int i= 0; i < 5; i++) {
-            if(mMoodsCount[i] > 0) {
+            //if(mMoodsCount[i] > 0) {
                 yValues.add(new Entry(mMoodsCount[i], i));
                 xValues.add(titles[i]);
-            }
+            //}
         }
 
         PieDataSet dataSet = new PieDataSet(yValues, "Humeurs");
         PieData data = new PieData(xValues, dataSet);
 
         // In percentage Term
-        data.setValueFormatter(new PercentFormatter());
+        data.setValueFormatter(new ChartValueFormatter());
         // Default value
         //data.setValueFormatter(new DefaultValueFormatter(0));
         pieChart.setUsePercentValues(true);
