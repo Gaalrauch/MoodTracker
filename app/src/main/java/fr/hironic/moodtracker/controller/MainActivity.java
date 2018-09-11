@@ -22,6 +22,8 @@ import fr.hironic.moodtracker.model.MoodsHistory;
 import fr.hironic.moodtracker.tools.DateManager;
 
 import static fr.hironic.moodtracker.Constants.DEFAULT_MOOD_VALUE;
+import static fr.hironic.moodtracker.Constants.MOOD_COLORS;
+import static fr.hironic.moodtracker.Constants.MOOD_DRAWABLES;
 import static fr.hironic.moodtracker.Constants.PREF_KEY_TODAY_NUMBER;
 import static fr.hironic.moodtracker.Constants.PREF_KEY_TODAY_COMMENT;
 import static fr.hironic.moodtracker.Constants.PREF_KEY_TODAY_MOOD;
@@ -126,27 +128,8 @@ public class MainActivity extends AppCompatActivity implements
      * @param mood mood value from 0 (sad) to 4 (super happy)
      */
     private void displayMood(int mood) {
-        switch (mood) {
-            case 0:
-                mMainLayout.setBackgroundColor(getResources().getColor(R.color.faded_red));
-                mSmiley.setImageDrawable(getResources().getDrawable(R.drawable.smiley_sad));
-                break;
-            case 1:
-                mMainLayout.setBackgroundColor(getResources().getColor(R.color.warm_grey));
-                mSmiley.setImageDrawable(getResources().getDrawable(R.drawable.smiley_disappointed));
-                break;
-            case 2:
-                mMainLayout.setBackgroundColor(getResources().getColor(R.color.cornflower_blue_65));
-                mSmiley.setImageDrawable(getResources().getDrawable(R.drawable.smiley_normal));
-                break;
-            case 3:
-                mMainLayout.setBackgroundColor(getResources().getColor(R.color.light_sage));
-                mSmiley.setImageDrawable(getResources().getDrawable(R.drawable.smiley_happy));
-                break;
-            case 4:
-                mMainLayout.setBackgroundColor(getResources().getColor(R.color.banana_yellow));
-                mSmiley.setImageDrawable(getResources().getDrawable(R.drawable.smiley_super_happy));
-        }
+        mMainLayout.setBackgroundColor(getResources().getColor(MOOD_COLORS[mood]));
+        mSmiley.setImageDrawable(getResources().getDrawable(MOOD_DRAWABLES[mood]));
     }
 
     /**

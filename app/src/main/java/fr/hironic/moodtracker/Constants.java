@@ -18,4 +18,11 @@ public class Constants {
             R.color.banana_yellow
     };
 
+    public static final int[] MOOD_DRAWABLES = { R.drawable.smiley_sad,
+            R.drawable.smiley_disappointed,
+            R.drawable.smiley_normal,
+            R.drawable.smiley_happy,
+            R.drawable.smiley_super_happy
+    };
+
 }
