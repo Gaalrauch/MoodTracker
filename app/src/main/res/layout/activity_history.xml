@@ -10,49 +10,49 @@
 
     <include
         android:id="@+id/llHistory0"
-        layout="@layout/history_mood"
+        layout="@layout/view_history_mood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <include
         android:id="@+id/llHistory1"
-        layout="@layout/history_mood"
+        layout="@layout/view_history_mood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <include
         android:id="@+id/llHistory2"
-        layout="@layout/history_mood"
+        layout="@layout/view_history_mood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <include
         android:id="@+id/llHistory3"
-        layout="@layout/history_mood"
+        layout="@layout/view_history_mood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <include
         android:id="@+id/llHistory4"
-        layout="@layout/history_mood"
+        layout="@layout/view_history_mood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <include
         android:id="@+id/llHistory5"
-        layout="@layout/history_mood"
+        layout="@layout/view_history_mood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <include
         android:id="@+id/llHistory6"
-        layout="@layout/history_mood"
+        layout="@layout/view_history_mood"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />

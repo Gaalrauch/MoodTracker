@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements
     private void openCommentForm() {
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(MainActivity.this);
         final ViewGroup nullParent = null;
-        View mView = layoutInflaterAndroid.inflate(R.layout.add_comment_dialog_box, nullParent);
+        View mView = layoutInflaterAndroid.inflate(R.layout.view_comment_dialogbox, nullParent);
 
         // Set text to today comment
         final EditText etUserInput = mView.findViewById(R.id.etComment);
