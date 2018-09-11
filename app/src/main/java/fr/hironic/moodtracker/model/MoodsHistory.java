@@ -4,6 +4,12 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 
+/**
+ * Created by Gaalrauch
+ * Manage Moods history
+ *
+ */
+
 public class MoodsHistory {
 
     private ArrayList<Mood> mMoods = new ArrayList<>(); // List of moods to manage history
