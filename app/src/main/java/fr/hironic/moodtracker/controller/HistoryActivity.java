@@ -60,16 +60,16 @@ public class HistoryActivity extends AppCompatActivity {
                     String text;
                     switch (days) {
                         case 1:
-                            text = "Hier";
+                            text = getString(R.string.history_yesterday);
                             break;
                         case 2:
-                            text = "Avant-hier";
+                            text = getString(R.string.history_two_days_ago);
                             break;
                         case 7:
-                            text = "Il y a une semaine";
+                            text = getString(R.string.history_one_week_ago);
                             break;
                         default:
-                            text = "Il y a " + days + " jours";
+                            text = getString(R.string.history_x_days_ago, days);
                     }
 
                     TextView textView = layout.findViewById(R.id.tvTime);
