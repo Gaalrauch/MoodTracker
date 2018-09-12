@@ -125,11 +125,11 @@ public class MainActivity extends AppCompatActivity implements
 
     /**
      * Update the background color and mood picture depending on mood value
-     * @param mood mood value from 0 (sad) to 4 (super happy)
+     * @param type mood type from 0 (sad) to 4 (super happy)
      */
-    private void displayMood(int mood) {
-        mMainLayout.setBackgroundColor(getResources().getColor(MOOD_COLORS[mood]));
-        mSmiley.setImageDrawable(getResources().getDrawable(MOOD_DRAWABLES[mood]));
+    private void displayMood(int type) {
+        mMainLayout.setBackgroundColor(getResources().getColor(MOOD_COLORS[type]));
+        mSmiley.setImageDrawable(getResources().getDrawable(MOOD_DRAWABLES[type]));
     }
 
     /**
@@ -138,11 +138,11 @@ public class MainActivity extends AppCompatActivity implements
      * Reset comment to an empty String if necessary
      * Update mPreferences
      * Call displayMood() to display visual changes
-     * @param type mood value from 0 (sad) to 4 (super happy)
+     * @param type mood type from 0 (sad) to 4 (super happy)
      */
     private void selectMood(int type) {
         checkForNewDay();
-        // Remove current comment if we change mood
+        // Remove current comment if we change mood type
         if(type != mTodayMood) {
             mTodayComment = "";
             mTodayMood = type;
