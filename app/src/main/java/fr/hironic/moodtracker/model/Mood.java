@@ -17,10 +17,21 @@ public class Mood {
     private int mType;
     private String mComment;
 
-    Mood (int dayNumber, int type, String comment) {
+    public Mood(int dayNumber, int type, String comment) {
         this.mDayNumber = dayNumber;
         this.mType = type;
         this.mComment = comment;
+    }
+
+    public Mood(String mood) {
+        try {
+            JSONArray array= new JSONArray(mood);
+            mDayNumber = array.getInt(0);
+            mType = array.getInt(1);
+            mComment = array.getString(2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -42,5 +53,13 @@ public class Mood {
 
     public String getComment() {
         return mComment;
+    }
+
+    public void setType(int type) {
+        mType = type;
+    }
+
+    public void setComment(String comment) {
+        mComment = comment;
     }
 }

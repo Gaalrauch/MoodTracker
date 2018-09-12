@@ -3,10 +3,8 @@ package fr.hironic.moodtracker;
 public class Constants {
 
     // SharedPreferences keys
-    public static final String PREF_KEY_TODAY_NUMBER = "LAST_DATE";
-    public static final String PREF_KEY_TODAY_MOOD = "TODAY_MOOD";
-    public static final String PREF_KEY_TODAY_COMMENT = "TODAY_COMMENT";
-    public static final String PREF_MOOD_HISTORY = "MOOD_HISTORY";
+    public static final String PREF_KEY_MOOD_TODAY = "MOOD_TODAY";
+    public static final String PREF_KEY_MOOD_HISTORY = "MOOD_HISTORY";
 
     // Default mood value, on first launch or new day
     public static final int DEFAULT_MOOD_VALUE = 3;

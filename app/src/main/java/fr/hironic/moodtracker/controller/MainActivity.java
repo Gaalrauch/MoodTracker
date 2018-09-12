@@ -18,16 +18,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import fr.hironic.moodtracker.R;
+import fr.hironic.moodtracker.model.Mood;
 import fr.hironic.moodtracker.model.MoodsHistory;
 import fr.hironic.moodtracker.tools.GetTodayNumber;
 
 import static fr.hironic.moodtracker.Constants.DEFAULT_MOOD_VALUE;
 import static fr.hironic.moodtracker.Constants.MOOD_COLORS;
 import static fr.hironic.moodtracker.Constants.MOOD_DRAWABLES;
-import static fr.hironic.moodtracker.Constants.PREF_KEY_TODAY_NUMBER;
-import static fr.hironic.moodtracker.Constants.PREF_KEY_TODAY_COMMENT;
-import static fr.hironic.moodtracker.Constants.PREF_KEY_TODAY_MOOD;
-import static fr.hironic.moodtracker.Constants.PREF_MOOD_HISTORY;
+import static fr.hironic.moodtracker.Constants.PREF_KEY_MOOD_TODAY;
+import static fr.hironic.moodtracker.Constants.PREF_KEY_MOOD_HISTORY;
 
 /**
  * Created by Gaalrauch
@@ -45,9 +44,13 @@ public class MainActivity extends AppCompatActivity implements
 
     private SharedPreferences mPreferences; // Contains mTodayNumber, mTodayMood, mTodayComment and mHistory
 
+    private Mood mTodayMood;
+    /*
     private int mTodayNumber; // Number of days since January 1st 1970
     private int mTodayMood; // Current mood type for today from 0 (sad) to 4 (super happy)
     private String mTodayComment; // Current comment for today mood
+    */
+
     private String mHistory; // Moods history
 
     private ConstraintLayout mMainLayout; // Used to update background color
@@ -62,11 +65,11 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         mPreferences = getPreferences(MODE_PRIVATE);
-        mTodayNumber = mPreferences.getInt(PREF_KEY_TODAY_NUMBER, 0);
-        mTodayMood = mPreferences.getInt(PREF_KEY_TODAY_MOOD, DEFAULT_MOOD_VALUE);
-        mTodayComment = mPreferences.getString(PREF_KEY_TODAY_COMMENT, "");
-        mHistory = mPreferences.getString(PREF_MOOD_HISTORY, "");
 
+        String moodData = mPreferences.getString(PREF_KEY_MOOD_TODAY, "[0,3,\"\"]");
+        mTodayMood = new Mood(moodData);
+
+        mHistory = mPreferences.getString(PREF_KEY_MOOD_HISTORY, "");
         mMoodsHistory = new MoodsHistory(mHistory);
 
         // If there is something saved, show chart and history buttons
@@ -82,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements
 
         checkForNewDay();
 
-        selectMood(mTodayMood);
+        selectMood(mTodayMood.getType());
 
         findViewById(R.id.btnComment).setOnTouchListener(this);
         findViewById(R.id.btnHistory).setOnTouchListener(this);
@@ -100,25 +103,21 @@ public class MainActivity extends AppCompatActivity implements
     private void checkForNewDay() {
 
         int currentDayNumber = GetTodayNumber.getTodayNumber();
-        if(currentDayNumber != mTodayNumber) {
+        if(currentDayNumber != mTodayMood.getDayNumber()) {
 
-            if(mTodayNumber > 0) { // There was something to save, then save it
-                mMoodsHistory.addMoodToHistory(mTodayNumber, mTodayMood, mTodayComment);
+            if(mTodayMood.getDayNumber() > 0) { // There was something to save, then save it
+                mMoodsHistory.addMoodToHistory(mTodayMood);
                 mHistory = mMoodsHistory.getHistory();
                 // In case there was no history before, show chart and history buttons
                 findViewById(R.id.btnChart).setVisibility(View.VISIBLE);
                 findViewById(R.id.btnHistory).setVisibility(View.VISIBLE);
             }
 
-            mTodayNumber = currentDayNumber;
-            mTodayMood = DEFAULT_MOOD_VALUE;
-            mTodayComment = "";
+            mTodayMood = new Mood(currentDayNumber, DEFAULT_MOOD_VALUE, "");
 
             mPreferences.edit()
-                    .putInt(PREF_KEY_TODAY_NUMBER, mTodayNumber)
-                    .putInt(PREF_KEY_TODAY_MOOD, mTodayMood)
-                    .putString(PREF_KEY_TODAY_COMMENT, mTodayComment)
-                    .putString(PREF_MOOD_HISTORY, mHistory)
+                    .putString(PREF_KEY_MOOD_TODAY, mTodayMood.toString())
+                    .putString(PREF_KEY_MOOD_HISTORY, mHistory)
                     .apply();
         }
     }
@@ -142,12 +141,12 @@ public class MainActivity extends AppCompatActivity implements
      */
     private void selectMood(int type) {
         checkForNewDay();
-        // Remove current comment if we change mood type
-        if(type != mTodayMood) {
-            mTodayComment = "";
-            mTodayMood = type;
+        // Remove current comment if mood type has changed
+        if(type != mTodayMood.getType()) {
+            mTodayMood.setType(type);
+            mTodayMood.setComment("");
         }
-        mPreferences.edit().putInt(PREF_KEY_TODAY_MOOD, mTodayMood).apply();
+        mPreferences.edit().putString(PREF_KEY_MOOD_TODAY, mTodayMood.toString()).apply();
         displayMood(type);
     }
 
@@ -162,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // Set text to today comment
         final EditText etUserInput = mView.findViewById(R.id.etComment);
-        etUserInput.setText(mTodayComment);
+        etUserInput.setText(mTodayMood.getComment());
 
         AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(MainActivity.this);
         alertDialogBuilderUserInput.setView(mView);
@@ -172,9 +171,9 @@ public class MainActivity extends AppCompatActivity implements
                 .setPositiveButton(getString(R.string.mood_comment_btn_validate), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogBox, int id) {
                         // Save comment for today
-                        mTodayComment = etUserInput.getText().toString();
+                        mTodayMood.setComment(etUserInput.getText().toString());
                         // Update SharedPreferences
-                        mPreferences.edit().putString(PREF_KEY_TODAY_COMMENT, mTodayComment).apply();
+                        mPreferences.edit().putString(PREF_KEY_MOOD_TODAY, mTodayMood.toString()).apply();
                         Toast.makeText(getApplicationContext(), getString(R.string.mood_comment_registered), Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -220,14 +219,14 @@ public class MainActivity extends AppCompatActivity implements
         if(Math.abs(motionEvent.getX() - motionEvent1.getX()) > Math.abs(motionEvent.getY() - motionEvent1.getY())) { // User flings horizontally
             return false;
         }
+        int type = mTodayMood.getType();
         if(motionEvent.getY() > motionEvent1.getY()) { // Fling in top direction, increase mood type
-            if(mTodayMood > 3) return false;
-            selectMood(mTodayMood + 1);
+            if(type > 3) return false;
+            selectMood(type + 1);
         } else { // Fling down, decrease mood type
-            if(mTodayMood == 0) return false;
-            selectMood(mTodayMood - 1);
+            if(type == 0) return false;
+            selectMood(type - 1);
         }
-
         return true;
     }
 
