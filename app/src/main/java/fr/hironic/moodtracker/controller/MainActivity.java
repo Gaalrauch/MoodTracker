@@ -20,7 +20,7 @@ import android.widget.Toast;
 import fr.hironic.moodtracker.R;
 import fr.hironic.moodtracker.model.Mood;
 import fr.hironic.moodtracker.model.MoodsHistory;
-import fr.hironic.moodtracker.tools.GetTodayNumber;
+import fr.hironic.moodtracker.tools.DayNumber;
 
 import static fr.hironic.moodtracker.Constants.DEFAULT_MOOD_VALUE;
 import static fr.hironic.moodtracker.Constants.MOOD_COLORS;
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     private void checkForNewDay() {
 
-        int currentDayNumber = GetTodayNumber.getTodayNumber();
+        int currentDayNumber = DayNumber.getTodayNumber();
         if(currentDayNumber != mTodayMood.getDayNumber()) {
 
             if(mTodayMood.getDayNumber() > 0) { // There was something to save, then save it
