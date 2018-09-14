@@ -23,6 +23,10 @@ public class Mood {
         this.mComment = comment;
     }
 
+    /**
+     * Generate Mood from its JSONArray version
+     * @param mood Mood in JSONArray String
+     */
     public Mood(String mood) {
         try {
             JSONArray array= new JSONArray(mood);
@@ -34,7 +38,10 @@ public class Mood {
         }
     }
 
-
+    /**
+     * Get a Mood as a JSONArray String
+     * @return mood as a JSONArray String
+     */
     public String toString() {
         JSONArray jsonArray = new JSONArray();
         jsonArray.put(mDayNumber);

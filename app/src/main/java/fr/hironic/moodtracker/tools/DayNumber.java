@@ -5,19 +5,20 @@ import java.util.TimeZone;
 
 /**
  * Created by Gaalrauch
- * Get "today number", number of days since January 1st, 1970
+ * Manipulate "day number", number of days since January 1st, 1970
+ * The day numbers are used to manage history (check if the date changed, count days)
  *
  */
 
 public abstract class DayNumber {
 
     /**
-     * Calculate today's "day number", number of days since January 1st 1970
+     * Calculate today's "day number"
      * Create a calendar with default time zone to get the date in user's TimeZone
      * Get GMT offset
      * Set calendar hour to midday (to prevent random 1 missing millisecond)
-     * Get time in millis and add GMT Offset
-     * Calculate number of day
+     * Get time in millis and add GMT offset
+     * Calculate number of days
      * @return day number
      */
     public static int getTodayNumber() {

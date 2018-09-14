@@ -15,7 +15,7 @@ public class Constants {
             R.color.light_sage,
             R.color.banana_yellow
     };
-
+    // Moods drawables
     public static final int[] MOOD_DRAWABLES = { R.drawable.smiley_sad,
             R.drawable.smiley_disappointed,
             R.drawable.smiley_normal,

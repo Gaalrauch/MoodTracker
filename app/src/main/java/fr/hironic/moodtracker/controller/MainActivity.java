@@ -45,12 +45,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private SharedPreferences mPreferences; // Contains mTodayNumber, mTodayMood, mTodayComment and mHistory
 
-    private Mood mTodayMood;
-    /*
-    private int mTodayNumber; // Number of days since January 1st 1970
-    private int mTodayMood; // Current mood type for today from 0 (sad) to 4 (super happy)
-    private String mTodayComment; // Current comment for today mood
-    */
+    private Mood mTodayMood; // A Mood to store today data (current day number, mood type and comment)
 
     private String mHistory; // Moods history
 
@@ -58,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements
     private ImageView mSmiley; // Used to update smiley picture
     private GestureDetectorCompat mGestureDetector; // Used to detect fling
 
-    private MoodsHistory mMoodsHistory;
+    private MoodsHistory mMoodsHistory; // List of Moods (day numbers, types and comments)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
