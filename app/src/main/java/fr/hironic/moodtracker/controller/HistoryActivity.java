@@ -101,21 +101,25 @@ public class HistoryActivity extends AppCompatActivity {
      * Return x days ago or special case like Yesterday, 1 week ago,..
      */
     private String daysToText(int days) {
-        String text;
-        switch (days) {
-            case 1:
-                text = getString(R.string.history_yesterday);
-                break;
-            case 2:
-                text = getString(R.string.history_two_days_ago);
-                break;
-            case 7:
-                text = getString(R.string.history_one_week_ago);
-                break;
-            default:
-                text = getString(R.string.history_x_days_ago, days);
+        if(days == 7) {
+            return getString(R.string.history_one_week_ago);
         }
-        return text;
+        if(days > 2) {
+            return getString(R.string.history_x_days_ago, days);
+        }
+        if(days == 2) {
+            return getString(R.string.history_two_days_ago);
+        }
+        if(days == 1) {
+            return getString(R.string.history_yesterday);
+        }
+        if(days == 0) {
+            return getString(R.string.history_today);
+        }
+        if(days == -1) {
+            return getString(R.string.history_tomorrow);
+        }
+        return getString(R.string.history_in_x_days);
     }
 
 }

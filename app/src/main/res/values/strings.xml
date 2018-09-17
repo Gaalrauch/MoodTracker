@@ -5,6 +5,9 @@
     <string name="history_two_days_ago">2 days ago</string>
     <string name="history_one_week_ago">1 week ago</string>
     <string name="history_x_days_ago">%1$d days ago</string>
+    <string name="history_today">Today</string>
+    <string name="history_tomorrow">Tomorrow</string>
+    <string name="history_in_x_days">In %1$d days</string>
     <string name="mood_comment_box_tiltle">Edit comment</string>
     <string name="mood_comment_hint">Your comment..</string>
     <string name="mood_comment_btn_cancel">Cancel</string>
