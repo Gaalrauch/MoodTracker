@@ -46,8 +46,7 @@ public class MainActivity extends AppCompatActivity implements
     private SharedPreferences mPreferences; // Contains mTodayNumber, mTodayMood, mTodayComment and mHistory
 
     private Mood mTodayMood; // A Mood to store today data (current day number, mood type and comment)
-
-    private String mHistory; // Moods history
+    private String mHistory; // Moods history (list of Mood)
 
     private ConstraintLayout mMainLayout; // Used to update background color
     private ImageView mSmiley; // Used to update smiley picture
@@ -76,10 +75,7 @@ public class MainActivity extends AppCompatActivity implements
 
         mMainLayout = findViewById(R.id.mainLayout);
         mSmiley = findViewById(R.id.imgSmiley);
-
         mGestureDetector = new GestureDetectorCompat(this, this);
-
-        checkForNewDay();
 
         selectMood(mTodayMood.getType());
 
@@ -88,6 +84,18 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.btnChart).setOnTouchListener(this);
         findViewById(R.id.fling).setOnTouchListener(this);
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        checkForNewDay();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkForNewDay();
     }
 
     /**
@@ -243,7 +251,6 @@ public class MainActivity extends AppCompatActivity implements
 
         int action = motionEvent.getAction();
 
-
         if(view.getId() == R.id.fling) {
             mGestureDetector.onTouchEvent(motionEvent);
             return true;
@@ -256,8 +263,6 @@ public class MainActivity extends AppCompatActivity implements
         view.performClick();
 
         if(view.getId() == R.id.btnChart) {
-
-            checkForNewDay();
             Intent intent = new Intent(MainActivity.this, ChartActivity.class);
             intent.putExtra("history", mHistory);
             startActivity(intent);
@@ -265,8 +270,6 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         if(view.getId() == R.id.btnHistory) {
-
-            checkForNewDay();
             Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
             intent.putExtra("history", mHistory);
             startActivity(intent);
@@ -274,7 +277,6 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         if(view.getId() == R.id.btnComment) {
-
             openCommentDialogBox();
             return true;
         }
