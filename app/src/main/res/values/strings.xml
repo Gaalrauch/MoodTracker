@@ -10,4 +10,5 @@
     <string name="mood_comment_btn_cancel">Cancel</string>
     <string name="mood_comment_btn_validate">Validate</string>
     <string name="mood_comment_registered">Your comment has been registered</string>
+    <string name="mood_comment_removed">Your comment has been removed</string>
 </resources>

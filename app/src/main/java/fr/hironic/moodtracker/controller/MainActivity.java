@@ -166,11 +166,7 @@ public class MainActivity extends AppCompatActivity implements
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.mood_comment_btn_validate), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogBox, int id) {
-                        // Save comment for today
-                        mTodayMood.setComment(etUserInput.getText().toString());
-                        // Update SharedPreferences
-                        mPreferences.edit().putString(PREF_KEY_MOOD_TODAY, mTodayMood.toString()).apply();
-                        Toast.makeText(getApplicationContext(), getString(R.string.mood_comment_registered), Toast.LENGTH_SHORT).show();
+                        updateComment(etUserInput.getText().toString().trim());
                     }
                 })
 
@@ -185,6 +181,20 @@ public class MainActivity extends AppCompatActivity implements
         if(alertDialogAndroid.getWindow() != null)
             alertDialogAndroid.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         alertDialogAndroid.show();
+    }
+
+    private void updateComment(String comment) {
+        if(!comment.equals(mTodayMood.getComment())) {
+            mTodayMood.setComment(comment);
+            mPreferences.edit().putString(PREF_KEY_MOOD_TODAY, mTodayMood.toString()).apply();
+            String message;
+            if(comment.equals("")) {
+                message = getString(R.string.mood_comment_removed);
+            } else {
+                message = getString(R.string.mood_comment_registered);
+            }
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
