@@ -123,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements
                     .putString(PREF_KEY_MOOD_TODAY, mTodayMood.toString())
                     .putString(PREF_KEY_MOOD_HISTORY, mHistory)
                     .apply();
+
+            displayMood(mTodayMood.getType());
         }
     }
 
