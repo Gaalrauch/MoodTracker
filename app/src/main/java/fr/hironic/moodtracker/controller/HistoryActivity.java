@@ -119,7 +119,7 @@ public class HistoryActivity extends AppCompatActivity {
         if(days == -1) {
             return getString(R.string.history_tomorrow);
         }
-        return getString(R.string.history_in_x_days);
+        return getString(R.string.history_in_x_days, days);
     }
 
 }
